@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { EscalationGauge } from "@/components/gei/escalation-gauge";
+import { LiveEscalationGauge } from "@/components/gei/live-escalation-gauge";
 import { ArrowRight, Shield } from "lucide-react";
 
 export function HeroSection() {
@@ -69,11 +69,7 @@ export function HeroSection() {
 
           {/* Right: GEI Widget */}
           <div className="lg:pl-8">
-            <EscalationGauge
-              score={47}
-              change={3}
-              primaryDriver="Iran-Israel Spannungen"
-            />
+            <LiveEscalationGauge />
           </div>
         </div>
       </div>
