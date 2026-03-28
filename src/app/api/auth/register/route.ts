@@ -23,12 +23,12 @@ export async function POST(request: NextRequest) {
 
     const { name, email, password } = parsed.data;
 
-    // Check if user exists
+    // Check if user exists — same response to prevent enumeration
     const existing = await db.user.findUnique({ where: { email } });
     if (existing) {
       return NextResponse.json(
-        { error: "Diese E-Mail-Adresse ist bereits registriert." },
-        { status: 409 }
+        { data: { message: "Registrierung verarbeitet." } },
+        { status: 200 }
       );
     }
 
@@ -36,23 +36,16 @@ export async function POST(request: NextRequest) {
     const passwordHash = await bcrypt.hash(password, 12);
 
     // Create user
-    const user = await db.user.create({
+    await db.user.create({
       data: {
         name,
         email,
         passwordHash,
         tier: "FREE",
       },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        tier: true,
-        createdAt: true,
-      },
     });
 
-    return NextResponse.json({ data: user }, { status: 201 });
+    return NextResponse.json({ data: { message: "Registrierung erfolgreich." } }, { status: 201 });
   } catch (error) {
     console.error("[Register] Error:", error);
     return NextResponse.json(

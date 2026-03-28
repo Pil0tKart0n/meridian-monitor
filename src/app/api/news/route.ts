@@ -12,8 +12,8 @@ export async function GET(request: NextRequest) {
     const { searchParams } = request.nextUrl;
     const category = searchParams.get("category");
     const region = searchParams.get("region");
-    const limit = Math.min(parseInt(searchParams.get("limit") ?? "20"), 50);
-    const offset = parseInt(searchParams.get("offset") ?? "0");
+    const limit = Math.min(Number(searchParams.get("limit")) || 20, 50);
+    const offset = Math.max(Number(searchParams.get("offset")) || 0, 0);
 
     // Try database first
     const dbCount = await db.newsArticle.count();

@@ -16,8 +16,10 @@ import { categorizeArticle, detectRegion, scoreEvent } from "@/pipeline/categori
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl;
-    const limit = Math.min(parseInt(searchParams.get("limit") ?? "30"), 100);
-    const timespan = searchParams.get("timespan") ?? "60min";
+    const limit = Math.min(Number(searchParams.get("limit")) || 30, 100);
+    const VALID_TIMESPANS = ["15min", "60min", "24hours"];
+    const rawTimespan = searchParams.get("timespan") ?? "60min";
+    const timespan = VALID_TIMESPANS.includes(rawTimespan) ? rawTimespan : "60min";
     const categoryFilter = searchParams.get("category");
 
     const gdeltArticles = await fetchGdeltArticles(limit, timespan);

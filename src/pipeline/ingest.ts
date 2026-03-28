@@ -9,9 +9,7 @@ import { PrismaClient } from "@prisma/client";
 import { fetchAllRssFeeds } from "./rss";
 import { categorizeArticle, detectRegion, scoreEvent } from "./categorizer";
 
-const db = new PrismaClient({
-  datasourceUrl: "file:./prisma/dev.db",
-});
+const db = new PrismaClient();
 
 export async function ingestRssArticles(): Promise<number> {
   console.log("[Pipeline] Fetching RSS feeds...");

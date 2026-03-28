@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { User, Mail, Crown, Calendar, Shield } from "lucide-react";
+import { User, Mail, Crown, Shield } from "lucide-react";
 import Link from "next/link";
 
 export default function ProfilePage() {

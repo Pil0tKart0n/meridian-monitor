@@ -37,10 +37,9 @@ const SOURCE_FLAGS: Record<string, string> = {
   US: "🇺🇸", GB: "🇬🇧", DE: "🇩🇪", IL: "🇮🇱", QA: "🇶🇦", SA: "🇸🇦", FR: "🇫🇷", CN: "🇨🇳", RU: "🇷🇺", INT: "🌐",
 };
 
-export function NewsCard({ article }: { article: Article }) {
+export function NewsCard({ article, isRecent = false }: { article: Article; isRecent?: boolean }) {
   const config = CATEGORY_CONFIG[article.category] ?? CATEGORY_CONFIG.UNCATEGORIZED;
   const flag = SOURCE_FLAGS[article.sourceCountry] ?? "🌐";
-  const isRecent = (Date.now() - new Date(article.publishedAt).getTime()) < 3600000;
   const threatLevel = Math.min(5, Math.max(1, Math.ceil(Math.abs(article.tone) / 2) || 2));
 
   const cleanSummary = article.summary?.replace(/<[^>]*>/g, "")?.replace(/\s+/g, " ")?.trim() || "";

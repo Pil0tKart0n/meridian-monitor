@@ -51,11 +51,13 @@ export default function AdminPage() {
     }
   }
 
+  const pipelineHeaders = { "Authorization": "Bearer dev-pipeline-secret" };
+
   async function runPipeline() {
     setLoading("pipeline");
     setLastResult(null);
     try {
-      const res = await fetch("/api/pipeline", { method: "POST" });
+      const res = await fetch("/api/pipeline", { method: "POST", headers: pipelineHeaders });
       const data = await res.json();
       const result = data.data as PipelineResult;
       setLastResult(
@@ -73,7 +75,7 @@ export default function AdminPage() {
     setLoading("summarize");
     setLastResult(null);
     try {
-      const res = await fetch(`/api/pipeline/summarize?limit=${limit}`, { method: "POST" });
+      const res = await fetch(`/api/pipeline/summarize?limit=${limit}`, { method: "POST", headers: pipelineHeaders });
       const data = await res.json();
       if (data.error) {
         setLastResult(`Fehler: ${data.error}`);

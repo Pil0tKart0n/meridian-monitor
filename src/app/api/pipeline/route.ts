@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { requirePipelineAuth } from "@/lib/admin-auth";
 import { fetchAllRssFeeds } from "@/pipeline/rss";
 import { categorizeArticle, detectRegion, scoreEvent } from "@/pipeline/categorizer";
 import { calculateGeiFromArticles } from "@/pipeline/gei-calculator";
@@ -8,16 +9,17 @@ import { calculateGeiFromArticles } from "@/pipeline/gei-calculator";
  * POST /api/pipeline
  *
  * Triggers the data ingestion pipeline.
- * Fetches RSS feeds, categorizes articles, stores in DB, and updates GEI.
+ * Requires: Authorization: Bearer <PIPELINE_SECRET>
  */
-export async function POST() {
+export async function POST(request: NextRequest) {
+  const authError = requirePipelineAuth(request);
+  if (authError) return authError;
+
   try {
     const start = Date.now();
 
-    // 1. Fetch RSS feeds
     const rawArticles = await fetchAllRssFeeds();
 
-    // 2. Upsert into database
     let inserted = 0;
     for (const article of rawArticles) {
       try {
@@ -44,39 +46,32 @@ export async function POST() {
           },
         });
         inserted++;
-      } catch {
-        // Skip duplicates
+      } catch (error) {
+        if (error instanceof Error && !error.message.includes("Unique constraint")) {
+          console.error("[Pipeline] Insert error:", error.message);
+        }
       }
     }
 
-    // 3. Calculate and save GEI snapshot
     const ninetyDaysAgo = new Date();
     ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
 
     const scoredArticles = await db.newsArticle.findMany({
-      where: {
-        publishedAt: { gte: ninetyDaysAgo },
-        category: { not: "UNCATEGORIZED" },
-      },
+      where: { publishedAt: { gte: ninetyDaysAgo }, category: { not: "UNCATEGORIZED" } },
       select: { category: true, geiScore: true, publishedAt: true },
     });
 
     const gei = calculateGeiFromArticles(
       scoredArticles.map((a: { category: string; geiScore: number; publishedAt: Date }) => ({
-        category: a.category,
-        score: a.geiScore,
-        eventDate: a.publishedAt,
+        category: a.category, score: a.geiScore, eventDate: a.publishedAt,
       }))
     );
 
     await db.escalationSnapshot.create({
       data: {
-        overallScore: gei.overallScore,
-        militaryScore: gei.militaryScore,
-        diplomaticScore: gei.diplomaticScore,
-        conflictScore: gei.conflictScore,
-        economicScore: gei.economicScore,
-        nuclearScore: gei.nuclearScore,
+        overallScore: gei.overallScore, militaryScore: gei.militaryScore,
+        diplomaticScore: gei.diplomaticScore, conflictScore: gei.conflictScore,
+        economicScore: gei.economicScore, nuclearScore: gei.nuclearScore,
         primaryDriver: gei.primaryDriver,
       },
     });
@@ -85,27 +80,20 @@ export async function POST() {
 
     return NextResponse.json({
       data: {
-        articlesFound: rawArticles.length,
-        articlesInserted: inserted,
+        articlesFound: rawArticles.length, articlesInserted: inserted,
         geiScore: gei.overallScore,
         geiLevel: gei.overallScore >= 81 ? "critical" : gei.overallScore >= 61 ? "severe" : gei.overallScore >= 41 ? "high" : gei.overallScore >= 21 ? "elevated" : "low",
-        primaryDriver: gei.primaryDriver,
-        durationSeconds: parseFloat(duration),
+        primaryDriver: gei.primaryDriver, durationSeconds: parseFloat(duration),
       },
     });
   } catch (error) {
     console.error("[Pipeline] Error:", error);
-    return NextResponse.json(
-      { error: "Pipeline failed", details: String(error) },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Pipeline execution failed" }, { status: 500 });
   }
 }
 
 /**
- * GET /api/pipeline
- *
- * Returns pipeline status (article count, last snapshot).
+ * GET /api/pipeline — Pipeline status (public, read-only)
  */
 export async function GET() {
   try {
@@ -117,13 +105,11 @@ export async function GET() {
     return NextResponse.json({
       data: {
         articleCount,
-        latestSnapshot: latestSnapshot
-          ? {
-              score: Math.round(latestSnapshot.overallScore),
-              primaryDriver: latestSnapshot.primaryDriver,
-              timestamp: latestSnapshot.timestamp.toISOString(),
-            }
-          : null,
+        latestSnapshot: latestSnapshot ? {
+          score: Math.round(latestSnapshot.overallScore),
+          primaryDriver: latestSnapshot.primaryDriver,
+          timestamp: latestSnapshot.timestamp.toISOString(),
+        } : null,
       },
     });
   } catch (error) {

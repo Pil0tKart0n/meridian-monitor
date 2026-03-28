@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { LiveEscalationGauge } from "@/components/gei/live-escalation-gauge";
 import { AnimatedGlobe } from "@/components/ui/animated-globe";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
-import { ArrowRight, Radio, Zap, Globe, Newspaper, Shield } from "lucide-react";
+import { ArrowRight, Radio, Zap, Globe, Newspaper } from "lucide-react";
 
 export function HeroSection() {
   const t = useTranslations("landing.hero");

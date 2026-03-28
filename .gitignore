@@ -52,3 +52,6 @@ data/cache/
 # Misc
 .vercel/
 .cache/
+prisma/dev.db
+prisma/prisma/
+*.db

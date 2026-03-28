@@ -29,23 +29,25 @@ export function NewsFeed() {
   const [category, setCategory] = useState("all");
   const [region, setRegion] = useState("all");
 
-  useEffect(() => { fetchArticles(); }, [category, region]);
-
-  async function fetchArticles() {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams();
-      if (category !== "all") params.set("category", category);
-      if (region !== "all") params.set("region", region);
-      const res = await fetch(`/api/news?${params.toString()}`);
-      const json = await res.json();
-      setArticles(json.data ?? []);
-    } catch (error) {
-      console.error("Failed to fetch news:", error);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams();
+        if (category !== "all") params.set("category", category);
+        if (region !== "all") params.set("region", region);
+        const res = await fetch(`/api/news?${params.toString()}`);
+        const json = await res.json();
+        setArticles(json.data ?? []);
+      } catch (error) {
+        console.error("Failed to fetch news:", error);
+      } finally {
+        setLoading(false);
+      }
     }
-  }
+    load();
+  }, [category, region]);
+
 
   return (
     <div className="space-y-6">
@@ -94,7 +96,11 @@ export function NewsFeed() {
         <div className="text-center py-16"><p className="text-zinc-500">{t("noResults")}</p></div>
       ) : (
         <div className="space-y-4">
-          {articles.map((article) => (<NewsCard key={article.id} article={article} />))}
+          {articles.map((article) => {
+            const publishedTime = new Date(article.publishedAt).getTime();
+            const recent = (Date.now() - publishedTime) < 3600000;
+            return <NewsCard key={article.id} article={article} isRecent={recent} />;
+          })}
         </div>
       )}
     </div>

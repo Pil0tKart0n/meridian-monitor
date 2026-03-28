@@ -1,6 +1,6 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { TrendingUp, Lock, BarChart3, DollarSign, Fuel, Shield } from "lucide-react";
+import { Lock, BarChart3, DollarSign, Fuel, Shield } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = {
