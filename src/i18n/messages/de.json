@@ -1,0 +1,188 @@
+{
+  "meta": {
+    "title": "Meridian Monitor — Geopolitische Intelligence in Echtzeit",
+    "description": "Datengetriebene Konfliktanalyse mit dem Global Escalation Index. Verstehe die Risiken, bevor sie Schlagzeilen werden."
+  },
+  "nav": {
+    "home": "Startseite",
+    "news": "Nachrichten",
+    "map": "Konfliktkarte",
+    "economy": "Wirtschaft",
+    "about": "Ueber uns",
+    "pricing": "Preise",
+    "login": "Anmelden",
+    "signup": "Registrieren",
+    "dashboard": "Dashboard",
+    "profile": "Profil",
+    "logout": "Abmelden",
+    "language": "Sprache"
+  },
+  "gei": {
+    "title": "Global Escalation Index",
+    "subtitle": "Echtzeit-Konfliktrisiko-Bewertung",
+    "current": "Aktueller Stand",
+    "trend": "Trend",
+    "change": "{direction, select, up {+{value} seit gestern} down {{value} seit gestern} other {unveraendert}}",
+    "level": {
+      "low": "Niedrig",
+      "elevated": "Erhoeht",
+      "high": "Hoch",
+      "severe": "Schwer",
+      "critical": "Kritisch"
+    },
+    "categories": {
+      "military": "Militaerisch",
+      "diplomatic": "Diplomatisch",
+      "conflict": "Konflikte",
+      "economic": "Wirtschaft",
+      "nuclear": "Nuklear/Strategie"
+    },
+    "driver": "Haupttreiber",
+    "methodology": "Methodik anzeigen",
+    "history": "Verlauf",
+    "premium_hint": "Historische Daten und Trends sind Premium-Features"
+  },
+  "news": {
+    "title": "Nachrichten",
+    "breaking": "Eilmeldung",
+    "latest": "Neueste Berichte",
+    "analysis": "Analysen",
+    "sources": "Quellen",
+    "sourceComparison": "Quellenvergleich",
+    "readMore": "Weiterlesen",
+    "minutesAgo": "vor {minutes} Min.",
+    "hoursAgo": "vor {hours} Std.",
+    "loadMore": "Mehr laden",
+    "noResults": "Keine Ergebnisse fuer diese Filter",
+    "filters": {
+      "all": "Alle",
+      "military": "Militaer",
+      "diplomatic": "Diplomatie",
+      "economic": "Wirtschaft",
+      "humanitarian": "Humanitaer",
+      "nuclear": "Nuklear"
+    },
+    "regions": {
+      "all": "Alle Regionen",
+      "gaza": "Gaza",
+      "israel": "Israel",
+      "lebanon": "Libanon",
+      "syria": "Syrien",
+      "yemen": "Jemen",
+      "iran": "Iran",
+      "redSea": "Rotes Meer",
+      "gulf": "Golfregion",
+      "europe": "Europa"
+    },
+    "premium_delay": "Tiefenanalysen sind fuer Free-Nutzer 48 Stunden verzoegert"
+  },
+  "landing": {
+    "hero": {
+      "headline": "Verstehe die Risiken, bevor sie Schlagzeilen werden",
+      "subheadline": "Datengetriebene Konfliktanalyse aus 30+ internationalen Quellen. Ein Index. Alle Perspektiven.",
+      "cta": "Kostenlos starten",
+      "ctaSecondary": "Mehr erfahren"
+    },
+    "features": {
+      "title": "Was Meridian Monitor einzigartig macht",
+      "gei": {
+        "title": "Global Escalation Index",
+        "description": "Ein transparenter, datengetriebener Index bewertet die Eskalationslage in Echtzeit auf einer Skala von 0 bis 100."
+      },
+      "sources": {
+        "title": "30+ internationale Quellen",
+        "description": "Nachrichten aus westlichen, arabischen, israelischen, russischen und chinesischen Medien — alle Perspektiven auf einen Blick."
+      },
+      "map": {
+        "title": "Interaktive Konfliktkarte",
+        "description": "Echtzeit-Heatmap aktiver Konfliktzonen mit Truppenbewegungen, Handelsrouten und Timeline."
+      },
+      "alerts": {
+        "title": "Fruehwarnsignale",
+        "description": "Push-Alerts bei signifikanten Eskalationen oder Deeskalationen — du erfaehrst es zuerst."
+      }
+    },
+    "newsletter": {
+      "title": "Woechentlicher Intelligence-Briefing",
+      "description": "Die wichtigsten Entwicklungen der Woche, kompakt zusammengefasst. Kostenlos.",
+      "placeholder": "Deine E-Mail-Adresse",
+      "cta": "Anmelden"
+    }
+  },
+  "pricing": {
+    "title": "Waehle deinen Zugang",
+    "subtitle": "Von kostenloser Nachrichten-Uebersicht bis zur professionellen Intelligence-Plattform.",
+    "monthly": "Monatlich",
+    "yearly": "Jaehrlich",
+    "yearlySave": "2 Monate kostenlos",
+    "tiers": {
+      "free": {
+        "name": "Free",
+        "price": "0",
+        "description": "Grundlegende Nachrichten-Uebersicht",
+        "features": [
+          "News-Feed (24-48h Verzoegerung bei Analysen)",
+          "Aktueller GEI-Wert",
+          "Woechentlicher Newsletter",
+          "Basis-Konfliktkarte"
+        ],
+        "cta": "Kostenlos starten"
+      },
+      "premium": {
+        "name": "Premium",
+        "price": "9,99",
+        "priceYearly": "99",
+        "description": "Fuer informierte Beobachter",
+        "features": [
+          "Echtzeit-Nachrichten",
+          "GEI mit Historie und Trends",
+          "Interaktive Konfliktkarte",
+          "Taegliche Intelligence-Briefings",
+          "Push-Alerts",
+          "Werbefrei",
+          "Community-Zugang"
+        ],
+        "cta": "Premium starten",
+        "popular": true
+      },
+      "professional": {
+        "name": "Professional",
+        "price": "29,99",
+        "priceYearly": "299",
+        "description": "Fuer Analysten und Entscheider",
+        "features": [
+          "Alles aus Premium",
+          "Rohdaten-Export (CSV/JSON)",
+          "API-Zugang",
+          "Quartals-Forecasting",
+          "Supply-Chain-Risk-Alerts",
+          "Regionale Deep-Dives",
+          "Priority-Support"
+        ],
+        "cta": "Professional starten"
+      }
+    }
+  },
+  "footer": {
+    "about": "Ueber uns",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "imprint": "Impressum",
+    "contact": "Kontakt",
+    "methodology": "GEI-Methodik",
+    "sources": "Datenquellen",
+    "copyright": "Meridian Monitor. Alle Rechte vorbehalten."
+  },
+  "common": {
+    "loading": "Wird geladen...",
+    "error": "Ein Fehler ist aufgetreten. Bitte versuche es erneut.",
+    "retry": "Erneut versuchen",
+    "close": "Schliessen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "search": "Suchen...",
+    "premium": "Premium",
+    "professional": "Professional",
+    "free": "Kostenlos"
+  }
+}

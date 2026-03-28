@@ -1,0 +1,183 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ============================================
+// Auth (NextAuth.js)
+// ============================================
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  tier          UserTier  @default(FREE)
+  stripeCustomerId String? @unique
+  stripeSubscriptionId String?
+  locale        String   @default("de")
+  accounts      Account[]
+  sessions      Session[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+enum UserTier {
+  FREE
+  PREMIUM
+  PROFESSIONAL
+  ENTERPRISE
+}
+
+// ============================================
+// News & Events
+// ============================================
+
+model NewsArticle {
+  id            String   @id @default(cuid())
+  externalId    String?  @unique
+  title         String
+  summary       String?
+  content       String?
+  url           String   @unique
+  imageUrl      String?
+  source        String
+  sourceCountry String?
+  category      EventCategory @default(UNCATEGORIZED)
+  region        ConflictRegion?
+  tone          Float?
+  publishedAt   DateTime
+  fetchedAt     DateTime @default(now())
+  language      String   @default("en")
+  duplicateOfId String?
+  duplicateOf   NewsArticle? @relation("Duplicates", fields: [duplicateOfId], references: [id])
+  duplicates    NewsArticle[] @relation("Duplicates")
+
+  @@index([publishedAt(sort: Desc)])
+  @@index([source])
+  @@index([category])
+  @@index([region])
+}
+
+model ConflictEvent {
+  id          String   @id @default(cuid())
+  externalId  String?  @unique
+  source      String
+  eventType   String
+  category    EventCategory
+  region      ConflictRegion?
+  latitude    Float?
+  longitude   Float?
+  country     String?
+  location    String?
+  actors      String[]
+  fatalities  Int      @default(0)
+  description String?
+  score       Float    @default(0)
+  eventDate   DateTime
+  fetchedAt   DateTime @default(now())
+
+  @@index([eventDate(sort: Desc)])
+  @@index([category])
+  @@index([region])
+}
+
+enum EventCategory {
+  MILITARY
+  DIPLOMATIC
+  ECONOMIC
+  HUMANITARIAN
+  NUCLEAR
+  CYBER
+  UNCATEGORIZED
+}
+
+enum ConflictRegion {
+  GAZA
+  ISRAEL
+  LEBANON
+  SYRIA
+  YEMEN
+  IRAN
+  IRAQ
+  RED_SEA
+  GULF
+  EUROPE
+  GLOBAL
+}
+
+// ============================================
+// Global Escalation Index (GEI)
+// ============================================
+
+model EscalationSnapshot {
+  id              String   @id @default(cuid())
+  timestamp       DateTime @default(now())
+  overallScore    Float
+  militaryScore   Float
+  diplomaticScore Float
+  conflictScore   Float
+  economicScore   Float
+  nuclearScore    Float
+  primaryDriver   String?
+  keyEvents       String[]
+  editorialAdjust Float    @default(0)
+
+  @@index([timestamp(sort: Desc)])
+}
+
+// ============================================
+// Market Data
+// ============================================
+
+model MarketDataPoint {
+  id        String   @id @default(cuid())
+  indicator String
+  value     Float
+  date      DateTime
+  fetchedAt DateTime @default(now())
+
+  @@unique([indicator, date])
+  @@index([indicator, date(sort: Desc)])
+}

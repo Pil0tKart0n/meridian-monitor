@@ -1,0 +1,188 @@
+{
+  "meta": {
+    "title": "Meridian Monitor — Real-Time Geopolitical Intelligence",
+    "description": "Data-driven conflict analysis with the Global Escalation Index. Understand the risks before they make headlines."
+  },
+  "nav": {
+    "home": "Home",
+    "news": "News",
+    "map": "Conflict Map",
+    "economy": "Economy",
+    "about": "About",
+    "pricing": "Pricing",
+    "login": "Log In",
+    "signup": "Sign Up",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "logout": "Log Out",
+    "language": "Language"
+  },
+  "gei": {
+    "title": "Global Escalation Index",
+    "subtitle": "Real-time conflict risk assessment",
+    "current": "Current Level",
+    "trend": "Trend",
+    "change": "{direction, select, up {+{value} since yesterday} down {{value} since yesterday} other {unchanged}}",
+    "level": {
+      "low": "Low",
+      "elevated": "Elevated",
+      "high": "High",
+      "severe": "Severe",
+      "critical": "Critical"
+    },
+    "categories": {
+      "military": "Military",
+      "diplomatic": "Diplomatic",
+      "conflict": "Conflict",
+      "economic": "Economic",
+      "nuclear": "Nuclear/Strategic"
+    },
+    "driver": "Primary Driver",
+    "methodology": "View Methodology",
+    "history": "History",
+    "premium_hint": "Historical data and trends are Premium features"
+  },
+  "news": {
+    "title": "News",
+    "breaking": "Breaking",
+    "latest": "Latest Reports",
+    "analysis": "Analysis",
+    "sources": "Sources",
+    "sourceComparison": "Source Comparison",
+    "readMore": "Read More",
+    "minutesAgo": "{minutes} min ago",
+    "hoursAgo": "{hours}h ago",
+    "loadMore": "Load More",
+    "noResults": "No results for these filters",
+    "filters": {
+      "all": "All",
+      "military": "Military",
+      "diplomatic": "Diplomatic",
+      "economic": "Economic",
+      "humanitarian": "Humanitarian",
+      "nuclear": "Nuclear"
+    },
+    "regions": {
+      "all": "All Regions",
+      "gaza": "Gaza",
+      "israel": "Israel",
+      "lebanon": "Lebanon",
+      "syria": "Syria",
+      "yemen": "Yemen",
+      "iran": "Iran",
+      "redSea": "Red Sea",
+      "gulf": "Gulf Region",
+      "europe": "Europe"
+    },
+    "premium_delay": "In-depth analyses are delayed by 48 hours for free users"
+  },
+  "landing": {
+    "hero": {
+      "headline": "Understand the risks before they make headlines",
+      "subheadline": "Data-driven conflict analysis from 30+ international sources. One index. All perspectives.",
+      "cta": "Get Started Free",
+      "ctaSecondary": "Learn More"
+    },
+    "features": {
+      "title": "What makes Meridian Monitor unique",
+      "gei": {
+        "title": "Global Escalation Index",
+        "description": "A transparent, data-driven index assesses the escalation level in real-time on a scale from 0 to 100."
+      },
+      "sources": {
+        "title": "30+ International Sources",
+        "description": "News from Western, Arab, Israeli, Russian, and Chinese media — all perspectives at a glance."
+      },
+      "map": {
+        "title": "Interactive Conflict Map",
+        "description": "Real-time heatmap of active conflict zones with troop movements, trade routes, and timeline."
+      },
+      "alerts": {
+        "title": "Early Warning Signals",
+        "description": "Push alerts for significant escalations or de-escalations — you hear it first."
+      }
+    },
+    "newsletter": {
+      "title": "Weekly Intelligence Briefing",
+      "description": "The most important developments of the week, summarized. Free.",
+      "placeholder": "Your email address",
+      "cta": "Subscribe"
+    }
+  },
+  "pricing": {
+    "title": "Choose Your Access",
+    "subtitle": "From free news overview to professional intelligence platform.",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "yearlySave": "2 months free",
+    "tiers": {
+      "free": {
+        "name": "Free",
+        "price": "0",
+        "description": "Basic news overview",
+        "features": [
+          "News feed (24-48h delay on analysis)",
+          "Current GEI value",
+          "Weekly newsletter",
+          "Basic conflict map"
+        ],
+        "cta": "Get Started Free"
+      },
+      "premium": {
+        "name": "Premium",
+        "price": "9.99",
+        "priceYearly": "99",
+        "description": "For informed observers",
+        "features": [
+          "Real-time news",
+          "GEI with history and trends",
+          "Interactive conflict map",
+          "Daily intelligence briefings",
+          "Push alerts",
+          "Ad-free",
+          "Community access"
+        ],
+        "cta": "Start Premium",
+        "popular": true
+      },
+      "professional": {
+        "name": "Professional",
+        "price": "29.99",
+        "priceYearly": "299",
+        "description": "For analysts and decision-makers",
+        "features": [
+          "Everything in Premium",
+          "Raw data export (CSV/JSON)",
+          "API access",
+          "Quarterly forecasting",
+          "Supply chain risk alerts",
+          "Regional deep-dives",
+          "Priority support"
+        ],
+        "cta": "Start Professional"
+      }
+    }
+  },
+  "footer": {
+    "about": "About",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "imprint": "Legal Notice",
+    "contact": "Contact",
+    "methodology": "GEI Methodology",
+    "sources": "Data Sources",
+    "copyright": "Meridian Monitor. All rights reserved."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred. Please try again.",
+    "retry": "Try Again",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "search": "Search...",
+    "premium": "Premium",
+    "professional": "Professional",
+    "free": "Free"
+  }
+}
