@@ -3,7 +3,8 @@
 import { ComposableMap, Geographies, Geography, Marker, Line } from "react-simple-maps";
 import { useState, useEffect } from "react";
 
-const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+// 50m resolution for smoother country borders at high zoom
+const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json";
 
 /**
  * Events represent things that HAPPEN — not countries.
@@ -23,93 +24,20 @@ interface MapEvent {
   active: boolean;
 }
 
-// Events focused on Israel/Gaza/Lebanon area (zoomed in)
+// Events with emojis — spaced out so nothing overlaps
 const EVENTS: MapEvent[] = [
-  // Rockets: Hezbollah -> Northern Israel (Kiryat Shmona)
-  {
-    id: "hzb-rockets-1",
-    type: "rocket",
-    from: [35.55, 33.35],
-    to: [35.57, 33.2],
-    label: "Hisbollah-Raketen auf Nordisrael",
-    color: "#eab308",
-    active: true,
-  },
-  // Rockets: Hezbollah -> Haifa direction
-  {
-    id: "hzb-rockets-2",
-    type: "rocket",
-    from: [35.4, 33.28],
-    to: [35.0, 32.8],
-    label: "Hisbollah-Raketen Richtung Haifa",
-    color: "#eab308",
-    active: true,
-  },
-  // Rockets: Gaza -> Sderot/Beer Sheva
-  {
-    id: "gaza-rockets",
-    type: "rocket",
-    from: [34.47, 31.45],
-    to: [34.6, 31.25],
-    label: "Raketenbeschuss aus Gaza",
-    color: "#22c55e",
-    active: true,
-  },
-  // Airstrike: IDF -> Gaza City
-  {
-    id: "idf-gaza-city",
-    type: "airstrike",
-    at: [34.44, 31.52],
-    label: "IDF Luftangriffe Gaza-Stadt",
-    color: "#3b82f6",
-    active: true,
-  },
-  // Airstrike: IDF -> Rafah
-  {
-    id: "idf-rafah",
-    type: "airstrike",
-    at: [34.25, 31.28],
-    label: "IDF Luftangriffe Rafah",
-    color: "#3b82f6",
-    active: true,
-  },
-  // Airstrike: IDF -> South Lebanon (Hezbollah positions)
-  {
-    id: "idf-lebanon",
-    type: "airstrike",
-    from: [35.2, 32.9],
-    to: [35.45, 33.25],
-    label: "IDF Vergeltungsschlag Libanon",
-    color: "#3b82f6",
-    active: true,
-  },
-  // IDF troops at Gaza border
-  {
-    id: "idf-gaza-border",
-    type: "troops",
-    at: [34.5, 31.5],
-    label: "IDF Bodenoffensive",
-    color: "#3b82f6",
-    active: true,
-  },
-  // IDF troops at Lebanon border
-  {
-    id: "idf-leb-border",
-    type: "troops",
-    at: [35.3, 33.08],
-    label: "IDF Truppenaufbau Nordgrenze",
-    color: "#3b82f6",
-    active: false,
-  },
-  // US Navy eastern Mediterranean
-  {
-    id: "us-navy",
-    type: "naval",
-    at: [34.0, 33.5],
-    label: "USS Gerald Ford Carrier Group",
-    color: "#0ea5e9",
-    active: false,
-  },
+  // Rockets: Hezbollah -> Northern Israel
+  { id: "hzb-rockets", type: "rocket", from: [35.5, 33.4], to: [35.4, 33.0], label: "Hisbollah-Raketen", color: "#eab308", active: true },
+  // Rockets: Gaza -> Beer Sheva
+  { id: "gaza-rockets", type: "rocket", from: [34.42, 31.48], to: [34.7, 31.2], label: "Raketenbeschuss aus Gaza", color: "#22c55e", active: true },
+  // Airstrike: IDF on Gaza
+  { id: "idf-gaza", type: "airstrike", at: [34.35, 31.4], label: "IDF Luftangriffe Gaza", color: "#3b82f6", active: true },
+  // Airstrike: IDF on South Lebanon
+  { id: "idf-leb", type: "airstrike", at: [35.55, 33.2], label: "IDF Schlaege Sued-Libanon", color: "#3b82f6", active: true },
+  // Troops: IDF at Gaza border
+  { id: "idf-troops", type: "troops", at: [34.55, 31.55], label: "IDF Bodenoffensive", color: "#3b82f6", active: true },
+  // US Navy
+  { id: "us-navy", type: "naval", at: [33.8, 34.0], label: "USS Gerald Ford", color: "#0ea5e9", active: false },
 ];
 
 const ME_COUNTRIES = [
@@ -182,149 +110,92 @@ export function AnimatedGlobe({ className = "" }: { className?: string }) {
           }
         </Geographies>
 
-        {/* === EVENTS === */}
+        {/* === COUNTRY LABELS === */}
+        {[
+          { name: "ISRAEL", coords: [34.85, 31.8] as [number, number] },
+          { name: "LIBANON", coords: [35.8, 33.85] as [number, number] },
+          { name: "SYRIEN", coords: [36.5, 33.2] as [number, number] },
+          { name: "JORDANIEN", coords: [36.2, 31.5] as [number, number] },
+          { name: "AEGYPTEN", coords: [33.5, 30.5] as [number, number] },
+          { name: "GAZA", coords: [34.2, 31.65] as [number, number] },
+        ].map((label) => (
+          <Marker key={label.name} coordinates={label.coords}>
+            <text
+              textAnchor="middle"
+              fontSize={label.name === "GAZA" ? 3 : 4}
+              fill={label.name === "GAZA" || label.name === "ISRAEL" ? "#555570" : "#333348"}
+              fontWeight="bold"
+              letterSpacing="0.15em"
+              style={{ pointerEvents: "none" }}
+            >
+              {label.name}
+            </text>
+          </Marker>
+        ))}
+
+        {/* === EVENTS WITH EMOJIS === */}
         {EVENTS.map((event) => {
-          // ROCKET / MISSILE: animated line from A to B with moving dot
+          const EMOJI_MAP: Record<string, string> = {
+            rocket: "🚀",
+            airstrike: "💥",
+            troops: "🪖",
+            naval: "🚢",
+            nuclear: "☢️",
+          };
+          const emoji = EMOJI_MAP[event.type] ?? "⚠️";
+
+          // ROCKET: emoji moves from A to B
           if (event.type === "rocket" && event.from && event.to) {
-            const progress = ((time * 3) % 100) / 100; // 0..1 cycling
-            const midX = event.from[0] + (event.to[0] - event.from[0]) * progress;
-            const midY = event.from[1] + (event.to[1] - event.from[1]) * progress;
+            const progress = ((time * 2) % 100) / 100;
+            const x = event.from[0] + (event.to[0] - event.from[0]) * progress;
+            const y = event.from[1] + (event.to[1] - event.from[1]) * progress;
 
             return (
               <g key={event.id}>
-                {/* Trail line */}
-                <Line
-                  from={event.from}
-                  to={event.to}
-                  stroke={event.color}
-                  strokeWidth={1.5}
-                  strokeDasharray="4 3"
-                  opacity={0.3}
-                  strokeLinecap="round"
-                />
-                {/* Moving projectile dot */}
-                <Marker coordinates={[midX, midY]}>
-                  <circle r={3} fill={event.color} opacity={0.9}>
-                    <animate attributeName="r" values="2;4;2" dur="0.5s" repeatCount="indefinite" />
-                  </circle>
-                  {/* Small trail behind projectile */}
-                  <circle r={6} fill={event.color} opacity={0.15} />
-                </Marker>
-                {/* Origin marker */}
-                <Marker coordinates={event.from}>
-                  <circle
-                    r={3} fill="none" stroke={event.color} strokeWidth={0.8} opacity={0.5}
-                    onMouseEnter={() => setSelectedEvent(event)}
-                    onMouseLeave={() => setSelectedEvent(null)}
-                    className="cursor-pointer"
-                  />
+                <Line from={event.from} to={event.to} stroke={event.color} strokeWidth={0.8} strokeDasharray="3 2" opacity={0.25} strokeLinecap="round" />
+                <Marker coordinates={[x, y]}>
+                  <text textAnchor="middle" dominantBaseline="central" fontSize={8} className="select-none" style={{ filter: "drop-shadow(0 0 2px rgba(0,0,0,0.9))" }}>
+                    {emoji}
+                  </text>
                 </Marker>
               </g>
             );
           }
 
-          // AIRSTRIKE at a location: expanding rings
-          if (event.type === "airstrike" && event.from && event.to) {
-            return (
-              <g key={event.id}>
-                <Line
-                  from={event.from}
-                  to={event.to}
-                  stroke={event.color}
-                  strokeWidth={1}
-                  strokeDasharray="3 3"
-                  opacity={0.25}
-                  strokeLinecap="round"
-                />
-                {/* Impact zone */}
-                <Marker coordinates={event.to}>
-                  <circle r={4} fill={event.color} opacity={0.2}>
-                    <animate attributeName="r" values="3;8;3" dur="1.5s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="0.3;0;0.3" dur="1.5s" repeatCount="indefinite" />
-                  </circle>
-                  <circle r={2} fill={event.color} opacity={0.5}
-                    onMouseEnter={() => setSelectedEvent(event)}
-                    onMouseLeave={() => setSelectedEvent(null)}
-                    className="cursor-pointer"
-                  />
-                </Marker>
-              </g>
-            );
-          }
-
+          // AIRSTRIKE: emoji at location with pulse
           if (event.type === "airstrike" && event.at) {
             return (
               <Marker key={event.id} coordinates={event.at}>
-                {/* Impact ripples */}
-                <circle r={5} fill="none" stroke={event.color} strokeWidth={0.8} opacity={0.4}>
-                  <animate attributeName="r" values="3;10;3" dur="2s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" values="0.5;0;0.5" dur="2s" repeatCount="indefinite" />
-                </circle>
                 <circle r={3} fill="none" stroke={event.color} strokeWidth={0.5} opacity={0.3}>
-                  <animate attributeName="r" values="2;7;2" dur="2s" begin="0.5s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" begin="0.5s" repeatCount="indefinite" />
+                  <animate attributeName="r" values="2;6;2" dur="1.5s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.4;0;0.4" dur="1.5s" repeatCount="indefinite" />
                 </circle>
-                {/* Center flash */}
-                <circle r={2.5} fill={event.color} opacity={0.6}
+                <text
+                  textAnchor="middle" dominantBaseline="central" fontSize={7}
+                  className="select-none cursor-pointer"
+                  style={{ filter: "drop-shadow(0 0 2px rgba(0,0,0,0.9))" }}
                   onMouseEnter={() => setSelectedEvent(event)}
                   onMouseLeave={() => setSelectedEvent(null)}
-                  className="cursor-pointer"
                 >
-                  <animate attributeName="opacity" values="0.6;0.9;0.6" dur="1s" repeatCount="indefinite" />
-                </circle>
+                  {emoji}
+                </text>
               </Marker>
             );
           }
 
-          // NAVAL: ship icon with sonar rings
-          if (event.type === "naval" && event.at) {
+          // TROOPS / NAVAL / OTHER: emoji at location
+          if (event.at) {
             return (
               <Marker key={event.id} coordinates={event.at}>
-                <circle r={6} fill="none" stroke={event.color} strokeWidth={0.4} opacity={0.2}>
-                  <animate attributeName="r" values="5;12;5" dur="3s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" values="0.3;0;0.3" dur="3s" repeatCount="indefinite" />
-                </circle>
-                <circle r={3} fill={event.color} opacity={0.3}
+                <text
+                  textAnchor="middle" dominantBaseline="central" fontSize={7}
+                  className="select-none cursor-pointer"
+                  style={{ filter: "drop-shadow(0 0 2px rgba(0,0,0,0.9))" }}
                   onMouseEnter={() => setSelectedEvent(event)}
                   onMouseLeave={() => setSelectedEvent(null)}
-                  className="cursor-pointer"
-                />
-                <rect x={-4} y={-1.5} width={8} height={3} rx={1} fill={event.color} opacity={0.7} />
-              </Marker>
-            );
-          }
-
-          // TROOPS: pulsing circle
-          if (event.type === "troops" && event.at) {
-            return (
-              <Marker key={event.id} coordinates={event.at}>
-                <circle r={5} fill={event.color} opacity={0.08} />
-                <circle r={3} fill={event.color} opacity={0.15}
-                  onMouseEnter={() => setSelectedEvent(event)}
-                  onMouseLeave={() => setSelectedEvent(null)}
-                  className="cursor-pointer"
                 >
-                  <animate attributeName="opacity" values="0.15;0.3;0.15" dur="2s" repeatCount="indefinite" />
-                </circle>
-              </Marker>
-            );
-          }
-
-          // NUCLEAR: hazard pulse
-          if (event.type === "nuclear" && event.at) {
-            return (
-              <Marker key={event.id} coordinates={event.at}>
-                <circle r={6} fill="none" stroke={event.color} strokeWidth={0.6} opacity={0.3}>
-                  <animate attributeName="r" values="4;9;4" dur="2.5s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" values="0.4;0;0.4" dur="2.5s" repeatCount="indefinite" />
-                </circle>
-                <circle r={3} fill={event.color} opacity={0.4}
-                  onMouseEnter={() => setSelectedEvent(event)}
-                  onMouseLeave={() => setSelectedEvent(null)}
-                  className="cursor-pointer"
-                >
-                  <animate attributeName="opacity" values="0.3;0.6;0.3" dur="1.5s" repeatCount="indefinite" />
-                </circle>
+                  {emoji}
+                </text>
               </Marker>
             );
           }
