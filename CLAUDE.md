@@ -6,8 +6,8 @@
 
 - **Name:** Meridian Monitor
 - **Description:** Geopolitische Nachrichtenplattform mit Fokus auf den Nahostkonflikt und globale Eskalationsrisiken. Kernfeature: ein datengetriebener Global Escalation Index (GEI), der in Echtzeit die Wahrscheinlichkeit einer totalen Eskalation berechnet. Freemium-Modell mit Premium-Abos. Mehrsprachig (DE/EN).
-- **Status:** Phase 0 — Kickoff (2026-03-28)
-- **Current Sprint:** Sprint 0 — Project Setup & Planning
+- **Status:** Phase 3 — Build (MVP Sprint 1 abgeschlossen)
+- **Current Sprint:** Sprint 1 — MVP (Landing, News, GEI, Pipeline)
 
 ## Business Model
 

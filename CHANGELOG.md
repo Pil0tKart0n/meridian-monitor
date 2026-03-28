@@ -7,12 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] — 2026-03-28
+
 ### Added
-- **Project Kickoff:** Meridian Monitor — geopolitische Intelligence-Plattform mit Echtzeit-Eskalationsindex
-- CLAUDE.md konfiguriert: Projektname, Tech Stack, Business Model, Zielgruppe, Datenquellen, GEI-Methodik
-- README.md erstellt: Produktbeschreibung, Feature-Überblick, Preistabelle, Tech Stack
-- .env.example mit allen benötigten API Keys und Feature Flags
-- Projektstruktur für Data Pipeline, i18n und Backend definiert
+- **Meridian Monitor MVP** — geopolitische Intelligence-Plattform mit Echtzeit-Eskalationsindex
+- **Global Escalation Index (GEI):** Datengetriebener Konfliktindex (0-100) mit 5 gewichteten Kategorien, exponentiellem Decay (14-Tage-Halbwertszeit) und 90-Tage-Rolling-Window
+- **Landing Page:** Hero mit Live-GEI-Gauge, Feature-Highlights, Pricing-Section, Newsletter-Signup, Breaking-News-Ticker
+- **News-Feed:** Artikel mit Kategorie-Filtern (Militaer, Diplomatie, Wirtschaft, Humanitaer, Nuklear) und Regions-Filtern (Gaza, Israel, Libanon, Syrien, Jemen, Iran, Rotes Meer, Europa)
+- **Data Pipeline:** GDELT DOC API Client (15-Min-Updates), RSS-Aggregator (20+ Quellen), Event-Kategorisierung, GEI-Scoring
+- **API-Routen:** /api/gei (Eskalationsindex), /api/news (Artikel), /api/news/live (GDELT Echtzeit), /api/rss (RSS-Feeds)
+- **Methodology-Seite:** Vollstaendige GEI-Transparenz (Kategorien, Scoring, Decay, Datenquellen, Skala)
+- **Konfliktkarte (Preview):** Premium-gated Vorschau mit animierten Markern
+- **Wirtschafts-Dashboard:** VIX, Oelpreis, Gold, Defense-Stocks mit Kontextinformationen
+- **i18n:** Deutsch und Englisch via next-intl, vollstaendige Translations
+- **Pricing-Seite:** Free / Premium / Professional Tier-Vergleich
+- **9 Feature-Specs:** Detaillierte Epics mit User Stories fuer alle geplanten Features
+- **Prisma Schema:** Users, NewsArticles, ConflictEvents, EscalationSnapshots, MarketData
+- Dark Theme mit professionellem Intelligence-Design
 
 ## [0.4.0] — 2026-03-13
 
