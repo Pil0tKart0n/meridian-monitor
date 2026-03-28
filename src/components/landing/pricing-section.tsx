@@ -5,6 +5,33 @@ import Link from "next/link";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+const TIER_FEATURES: Record<string, string[]> = {
+  free: [
+    "News-Feed (24-48h Verzoegerung bei Analysen)",
+    "Aktueller GEI-Wert",
+    "Woechentlicher Newsletter",
+    "Basis-Konfliktkarte",
+  ],
+  premium: [
+    "Echtzeit-Nachrichten",
+    "GEI mit Historie und Trends",
+    "Interaktive Konfliktkarte",
+    "Taegliche Intelligence-Briefings",
+    "Push-Alerts",
+    "Werbefrei",
+    "Community-Zugang",
+  ],
+  professional: [
+    "Alles aus Premium",
+    "Rohdaten-Export (CSV/JSON)",
+    "API-Zugang",
+    "Quartals-Forecasting",
+    "Supply-Chain-Risk-Alerts",
+    "Regionale Deep-Dives",
+    "Priority-Support",
+  ],
+};
+
 export function PricingSection() {
   const t = useTranslations("pricing");
 
@@ -39,20 +66,7 @@ export function PricingSection() {
             const price = t(`tiers.${tier.key}.price`);
             const description = t(`tiers.${tier.key}.description`);
             const cta = t(`tiers.${tier.key}.cta`);
-            const features: string[] = [];
-
-            // Read features array from translations
-            let i = 0;
-            while (true) {
-              try {
-                const feature = t(`tiers.${tier.key}.features.${i}`);
-                if (!feature) break;
-                features.push(feature);
-                i++;
-              } catch {
-                break;
-              }
-            }
+            const features = TIER_FEATURES[tier.key] ?? [];
 
             return (
               <div
