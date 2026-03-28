@@ -6,8 +6,8 @@
 
 - **Name:** Meridian Monitor
 - **Description:** Geopolitische Nachrichtenplattform mit Fokus auf den Nahostkonflikt und globale Eskalationsrisiken. Kernfeature: ein datengetriebener Global Escalation Index (GEI), der in Echtzeit die Wahrscheinlichkeit einer totalen Eskalation berechnet. Freemium-Modell mit Premium-Abos. Mehrsprachig (DE/EN).
-- **Status:** Phase 3 — Build (MVP Sprint 1 abgeschlossen)
-- **Current Sprint:** Sprint 1 — MVP (Landing, News, GEI, Pipeline)
+- **Status:** Phase 3 — Build (Sprint 1+2 abgeschlossen)
+- **Current Sprint:** Sprint 2 — Auth, Pipeline, Admin, GPT (abgeschlossen 2026-03-28)
 
 ## Business Model
 
@@ -237,8 +237,20 @@ Methodik: CAMEO Event Codes (GDELT) + ACLED Events + NLP Sentiment + Market Data
 
 ### Phase 0 — Kickoff (2026-03-28)
 - Projektname: Meridian Monitor
-- Tech-Stack definiert: Next.js 15 + Supabase + Vercel
+- Tech-Stack definiert: Next.js 16 + SQLite/Prisma + Vercel
 - Business Model: Freemium (Free/Premium/Professional/Enterprise)
 - Zielgruppe: OSINT-Community, Analysten, Investoren
 - GEI-Methodik definiert (5 Kategorien, 0-100 Skala)
 - Datenquellen identifiziert (GDELT, ACLED, RSS, FRED, Telegram)
+
+### v0.1.0 — MVP Sprint 1 (2026-03-28)
+- Landing Page, News Feed, GEI Engine, Data Pipeline, i18n (DE/EN)
+- Methodology, Pricing, Conflict Map Preview, Economy Dashboard
+- 13 API-Routen, 9 Feature-Specs
+
+### v0.2.0 — Sprint 2 (2026-03-28)
+- Auth (NextAuth.js Email/Password), Admin Dashboard
+- GPT-4o-mini Summarization (60 Artikel zusammengefasst)
+- SQLite DB mit 391 echten Artikeln aus 20+ RSS-Quellen
+- GEI History Chart, Profile Page, SEO (sitemap, robots.txt)
+- 20 Routen, Production Build erfolgreich

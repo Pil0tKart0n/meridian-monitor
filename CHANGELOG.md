@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] — 2026-03-28
+
+### Added
+- **Auth System:** NextAuth.js mit Email/Password, Registrierung, Login, Profil-Seite
+- **GPT-Summarization:** OpenAI GPT-4o-mini fuer deutsche Artikelzusammenfassungen und verbesserte Kategorisierung
+- **Admin Dashboard:** Pipeline-Management UI mit DB-Stats, RSS-Fetch und Summarization-Buttons
+- **GEI History Chart:** Recharts AreaChart mit 30-Tage-Verlauf und Kategorie-Breakdown (Premium)
+- **GEI History API:** GET /api/gei/history mit konfigurierbarem Zeitraum
+- **SQLite-Datenbank:** Lokale Entwicklungsdatenbank mit Prisma 6, 391 echte Artikel
+- **Pipeline API:** POST /api/pipeline (RSS-Fetch + GEI-Update), POST /api/pipeline/summarize (GPT)
+- **SEO:** sitemap.xml, robots.txt, Meta-Tags auf allen Seiten
+- **Session-aware Header:** Zeigt User-Name, Tier-Badge, Logout wenn eingeloggt
+- **Profil-Seite:** Tier-Anzeige, Upgrade-CTA fuer Free-Nutzer
+
 ## [0.1.0] — 2026-03-28
 
 ### Added

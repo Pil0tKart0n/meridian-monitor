@@ -122,4 +122,4 @@ MIT
 
 ## Status
 
-Phase 0 --- Kickoff abgeschlossen. Phase 1 (Discovery) in Arbeit.
+v0.2.0 --- MVP mit Auth, GPT-Summarization, Admin Dashboard und 391 echten Nachrichtenartikeln. 20 Routen, Production Build erfolgreich.
