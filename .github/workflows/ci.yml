@@ -18,7 +18,7 @@ jobs:
     outputs:
       has-node: ${{ steps.check.outputs.has-node }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - id: check
         run: |
           if [ -f "package.json" ]; then
@@ -36,7 +36,7 @@ jobs:
     if: needs.check-project.outputs.has-node == 'true'
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: actions/setup-node@v4
         with:
