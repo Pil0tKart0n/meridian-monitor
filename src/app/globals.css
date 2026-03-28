@@ -1,43 +1,86 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #030712;
-  --color-foreground: #f3f4f6;
-  --color-accent: #f59e0b;
-  --color-accent-hover: #d97706;
-  --color-surface: #111827;
-  --color-surface-hover: #1f2937;
-  --color-border: #1f2937;
-  --color-muted: #6b7280;
+  /* Modern dark palette — inspired by Vercel/Linear/Arc */
+  --color-background: #09090b;
+  --color-foreground: #fafafa;
+  --color-accent: #f97316;
+  --color-accent-hover: #ea580c;
+  --color-surface: #18181b;
+  --color-surface-hover: #27272a;
+  --color-border: #27272a;
+  --color-border-hover: #3f3f46;
+  --color-muted: #71717a;
   --font-sans: var(--font-inter);
 
+  /* GEI scale */
   --color-gei-low: #22c55e;
   --color-gei-elevated: #eab308;
-  --color-gei-high: #f59e0b;
-  --color-gei-severe: #f97316;
-  --color-gei-critical: #ef4444;
+  --color-gei-high: #f97316;
+  --color-gei-severe: #ef4444;
+  --color-gei-critical: #dc2626;
+
+  /* Faction colors */
+  --color-faction-israel: #3b82f6;
+  --color-faction-hamas: #16a34a;
+  --color-faction-hezbollah: #eab308;
+  --color-faction-iran: #a855f7;
+  --color-faction-houthi: #ef4444;
+  --color-faction-nato: #0ea5e9;
+  --color-faction-russia: #f43f5e;
+  --color-faction-china: #dc2626;
 }
 
 body {
   background: var(--color-background);
   color: var(--color-foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
 }
 
-/* Scrollbar styling for dark theme */
-::-webkit-scrollbar {
-  width: 8px;
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-muted); }
+
+/* Selection */
+::selection { background: var(--color-accent); color: var(--color-background); }
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Gradient text utility */
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-accent) 0%, #fb923c 50%, #fbbf24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-::-webkit-scrollbar-track {
+/* Glow effect */
+.glow-accent {
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.15), 0 0 60px rgba(249, 115, 22, 0.05);
+}
+
+/* Animated gradient border */
+.gradient-border {
+  position: relative;
   background: var(--color-surface);
+  border-radius: 1rem;
+}
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--color-accent), transparent 40%, transparent 60%, var(--color-accent));
+  z-index: -1;
+  opacity: 0.3;
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: 4px;
+/* Pulse dot */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
 }
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-muted);
-}
+.animate-pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }

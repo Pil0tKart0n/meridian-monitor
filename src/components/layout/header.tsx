@@ -16,6 +16,7 @@ export function Header() {
     { href: "/", label: t("home") },
     { href: "/news", label: t("news") },
     { href: "/map", label: t("map") },
+    { href: "/memes", label: "Memes" },
     { href: "/economy", label: t("economy") },
     { href: "/pricing", label: t("pricing") },
   ];
