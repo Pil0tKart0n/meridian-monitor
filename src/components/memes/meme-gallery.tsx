@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Flame, Clock, TrendingUp, ThumbsUp, MessageCircle, Share2, Smile, Filter } from "lucide-react";
+import {
+  Flame, Clock, TrendingUp, ThumbsUp, MessageCircle, Share2,
+  Smile, Filter, CheckCircle, AlertTriangle, XCircle, Zap,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Meme {
@@ -14,74 +17,117 @@ interface Meme {
   createdAt: string;
   tags: string[];
   liked: boolean;
+  factCheck?: {
+    status: "true" | "mostly-true" | "misleading" | "false" | "satire";
+    context: string;
+    sources: string[];
+  };
 }
+
+const FACT_CHECK_CONFIG = {
+  true: { icon: CheckCircle, color: "text-green-400", bg: "bg-green-950/50", border: "border-green-500/20", label: "Faktenbasiert" },
+  "mostly-true": { icon: CheckCircle, color: "text-emerald-400", bg: "bg-emerald-950/50", border: "border-emerald-500/20", label: "Weitgehend korrekt" },
+  misleading: { icon: AlertTriangle, color: "text-amber-400", bg: "bg-amber-950/50", border: "border-amber-500/20", label: "Irreführend" },
+  false: { icon: XCircle, color: "text-red-400", bg: "bg-red-950/50", border: "border-red-500/20", label: "Falsch" },
+  satire: { icon: Smile, color: "text-purple-400", bg: "bg-purple-950/50", border: "border-purple-500/20", label: "Satire" },
+};
 
 const DEMO_MEMES: Meme[] = [
   {
     id: "1",
     title: "Wenn der UN-Sicherheitsrat mal wieder ein Veto einlegt",
-    imageUrl: "https://placehold.co/600x500/1a1a2e/f59e0b?text=UN+Veto+%F0%9F%99%84&font=montserrat",
+    imageUrl: "https://placehold.co/600x500/18181b/f97316?text=🙄+UN+Veto+Again&font=montserrat",
     author: "DiplomacyDave",
     likes: 847,
     comments: 63,
     createdAt: "2h",
     tags: ["UN", "Diplomatie"],
     liked: false,
+    factCheck: {
+      status: "true",
+      context: "Russland und China haben seit 2011 gemeinsam 17 Mal ihr Veto im Sicherheitsrat eingelegt, zuletzt gegen eine Gaza-Resolution.",
+      sources: ["UN Security Council Records"],
+    },
   },
   {
     id: "2",
     title: "Oelpreis-Trader wenn Huthi-Milizen ein Schiff angreifen",
-    imageUrl: "https://placehold.co/600x600/1a1a2e/ef4444?text=%F0%9F%93%88+Oil+go+brrr&font=montserrat",
+    imageUrl: "https://placehold.co/600x600/18181b/ef4444?text=📈+Brent+go+brrr&font=montserrat",
     author: "PetroDollarPete",
     likes: 1243,
     comments: 89,
     createdAt: "5h",
     tags: ["Wirtschaft", "Rotes Meer"],
     liked: true,
+    factCheck: {
+      status: "mostly-true",
+      context: "Huthi-Angriffe haben die Versicherungspraemien fuer Rotes-Meer-Transporte um 300% erhoeht. Der direkte Oelpreis-Impact ist aber geringer als dargestellt.",
+      sources: ["Lloyd's of London", "Reuters"],
+    },
   },
   {
     id: "3",
-    title: "IAEA-Inspektoren auf dem Weg nach Iran",
-    imageUrl: "https://placehold.co/600x500/1a1a2e/a855f7?text=IAEA+%E2%98%A2%EF%B8%8F&font=montserrat",
+    title: "IAEA-Inspektoren auf dem Weg nach Iran — zum 247. Mal",
+    imageUrl: "https://placehold.co/600x500/18181b/a855f7?text=☢️+IAEA+Again&font=montserrat",
     author: "NuklearNerd",
     likes: 556,
     comments: 42,
     createdAt: "12h",
     tags: ["Nuklear", "Iran"],
     liked: false,
+    factCheck: {
+      status: "misleading",
+      context: "Die IAEA fuehrt regelmaessige Inspektionen durch, hat aber seit 2023 eingeschraenkten Zugang zu iranischen Anlagen. Die Darstellung als 'nutzlos' ist vereinfacht.",
+      sources: ["IAEA Board Reports", "Arms Control Association"],
+    },
   },
   {
     id: "4",
-    title: "NATO: 'Wir sind sehr besorgt' — zum 47. Mal diese Woche",
-    imageUrl: "https://placehold.co/600x500/1a1a2e/0ea5e9?text=NATO+concerns+%F0%9F%98%90&font=montserrat",
+    title: "NATO: 'Wir sind zutiefst besorgt' — Pressekonferenz #4782",
+    imageUrl: "https://placehold.co/600x500/18181b/0ea5e9?text=😐+Deep+Concern&font=montserrat",
     author: "BrusselsInsider",
     likes: 2103,
     comments: 156,
     createdAt: "1d",
     tags: ["NATO", "Diplomatie"],
     liked: false,
+    factCheck: {
+      status: "satire",
+      context: "Uebertreibung fuer komischen Effekt. NATO hat aber tatsaechlich die Formulierung 'deeply concerned' in ueber 200 offiziellen Statements seit 2022 verwendet.",
+      sources: ["NATO Press Releases"],
+    },
   },
   {
     id: "5",
-    title: "Wenn dein Prepper-Freund zum 3. Mal diese Woche recht hat",
-    imageUrl: "https://placehold.co/600x600/1a1a2e/22c55e?text=Prepper+wins+%F0%9F%8F%86&font=montserrat",
+    title: "Mein Prepper-Freund vs. die Realitaet — Runde 3 geht an ihn",
+    imageUrl: "https://placehold.co/600x600/18181b/22c55e?text=🏆+Prepper+Wins&font=montserrat",
     author: "SurvivalSteve",
     likes: 3421,
     comments: 234,
     createdAt: "1d",
     tags: ["Community", "Humor"],
     liked: true,
+    factCheck: {
+      status: "satire",
+      context: "Kommentar zur steigenden Relevanz von Krisenvorsorge. Die Bundesregierung empfiehlt tatsaechlich einen 10-Tage-Notvorrat.",
+      sources: ["BBK Ratgeber"],
+    },
   },
   {
     id: "6",
-    title: "VIX Fear Index vs. mein Portfolio",
-    imageUrl: "https://placehold.co/600x500/1a1a2e/eab308?text=VIX+vs+Portfolio+%F0%9F%92%80&font=montserrat",
+    title: "VIX Fear Index vs. mein Portfolio — Name a more iconic duo",
+    imageUrl: "https://placehold.co/600x500/18181b/eab308?text=💀+VIX+vs+Portfolio&font=montserrat",
     author: "WallStreetWarrior",
     likes: 1876,
     comments: 98,
     createdAt: "2d",
     tags: ["Wirtschaft", "Boerse"],
     liked: false,
+    factCheck: {
+      status: "true",
+      context: "Der VIX ist 2025-2026 tatsaechlich mehrfach ueber 25 gestiegen (Normal: 12-18), korreliert mit geopolitischen Eskalationen.",
+      sources: ["CBOE", "Bloomberg"],
+    },
   },
 ];
 
@@ -91,7 +137,7 @@ const SORT_OPTIONS = [
   { key: "top", label: "Top", icon: TrendingUp },
 ] as const;
 
-const TAG_FILTERS = ["Alle", "Diplomatie", "Militaer", "Wirtschaft", "Nuklear", "Community", "NATO", "Iran"];
+const TAG_FILTERS = ["Alle", "Diplomatie", "Militaer", "Wirtschaft", "Nuklear", "Community", "NATO", "Iran", "Rotes Meer"];
 
 export function MemeGallery() {
   const [sort, setSort] = useState<string>("hot");
@@ -121,14 +167,14 @@ export function MemeGallery() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black flex items-center gap-3">
-            <Smile className="h-7 w-7 text-accent" />
-            Memes
+            <Zap className="h-7 w-7 text-accent" />
+            Signal vs. Noise
           </h1>
-          <p className="text-sm text-muted mt-1">Geopolitischer Humor aus der Community</p>
+          <p className="text-sm text-muted mt-1">Geopolitische Memes — mit Faktencheck</p>
         </div>
 
         {/* Sort */}
-        <div className="flex items-center gap-1 bg-surface rounded-xl p-1 border border-border">
+        <div className="flex items-center gap-1 bg-zinc-900 rounded-xl p-1 border border-white/[0.06]">
           {SORT_OPTIONS.map((opt) => (
             <button
               key={opt.key}
@@ -160,7 +206,7 @@ export function MemeGallery() {
               "px-3 py-1.5 text-xs rounded-full border transition-colors",
               activeTag === tag
                 ? "bg-accent/10 text-accent border-accent/30 font-medium"
-                : "bg-transparent border-border text-muted hover:text-foreground hover:border-border-hover"
+                : "bg-transparent border-white/[0.06] text-muted hover:text-foreground hover:border-white/[0.12]"
             )}
           >
             {tag}
@@ -170,67 +216,89 @@ export function MemeGallery() {
 
       {/* Masonry Grid */}
       <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-        {filtered.map((meme) => (
-          <div
-            key={meme.id}
-            className="break-inside-avoid rounded-2xl bg-surface border border-border overflow-hidden group hover:border-border-hover transition-colors"
-          >
-            {/* Image */}
-            <div className="relative aspect-square bg-background">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={meme.imageUrl}
-                alt={meme.title}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
+        {filtered.map((meme) => {
+          const fc = meme.factCheck ? FACT_CHECK_CONFIG[meme.factCheck.status] : null;
+          const FcIcon = fc?.icon;
 
-            {/* Content */}
-            <div className="p-4 space-y-3">
-              <p className="text-sm font-semibold leading-snug">{meme.title}</p>
-
-              {/* Tags */}
-              <div className="flex flex-wrap gap-1.5">
-                {meme.tags.map((tag) => (
-                  <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-background text-muted border border-border">
-                    {tag}
-                  </span>
-                ))}
+          return (
+            <div
+              key={meme.id}
+              className="break-inside-avoid rounded-2xl bg-gradient-to-br from-white/[0.02] to-transparent border border-white/[0.06] overflow-hidden group hover:border-white/[0.12] transition-all"
+            >
+              {/* Image */}
+              <div className="relative bg-zinc-900">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={meme.imageUrl}
+                  alt={meme.title}
+                  className="w-full object-cover"
+                  loading="lazy"
+                />
               </div>
 
-              {/* Actions */}
-              <div className="flex items-center justify-between pt-1">
-                <div className="flex items-center gap-4">
-                  <button
-                    type="button"
-                    onClick={() => toggleLike(meme.id)}
-                    className={cn(
-                      "flex items-center gap-1.5 text-sm transition-colors",
-                      meme.liked ? "text-accent font-medium" : "text-muted hover:text-foreground"
+              {/* Content */}
+              <div className="p-4 space-y-3">
+                <p className="text-sm font-bold leading-snug">{meme.title}</p>
+
+                {/* Fact Check — Signal vs Noise */}
+                {meme.factCheck && fc && FcIcon && (
+                  <div className={cn("rounded-xl p-3 border", fc.bg, fc.border)}>
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <FcIcon className={cn("h-4 w-4", fc.color)} />
+                      <span className={cn("text-xs font-bold uppercase tracking-wider", fc.color)}>
+                        {fc.label}
+                      </span>
+                    </div>
+                    <p className="text-xs text-zinc-300 leading-relaxed">{meme.factCheck.context}</p>
+                    {meme.factCheck.sources.length > 0 && (
+                      <p className="text-[10px] text-muted mt-1.5">
+                        Quellen: {meme.factCheck.sources.join(", ")}
+                      </p>
                     )}
-                  >
-                    <ThumbsUp className={cn("h-4 w-4", meme.liked && "fill-current")} />
-                    {formatLikes(meme.likes)}
-                  </button>
-                  <span className="flex items-center gap-1.5 text-sm text-muted">
-                    <MessageCircle className="h-4 w-4" />
-                    {meme.comments}
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-xs text-muted">{meme.createdAt}</span>
-                  <button type="button" className="text-muted hover:text-foreground transition-colors">
-                    <Share2 className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
+                  </div>
+                )}
 
-              {/* Author */}
-              <p className="text-xs text-muted">von <span className="font-medium text-foreground/70">@{meme.author}</span></p>
+                {/* Tags */}
+                <div className="flex flex-wrap gap-1.5">
+                  {meme.tags.map((tag) => (
+                    <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-900 text-muted border border-white/[0.06]">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center justify-between pt-1">
+                  <div className="flex items-center gap-4">
+                    <button
+                      type="button"
+                      onClick={() => toggleLike(meme.id)}
+                      className={cn(
+                        "flex items-center gap-1.5 text-sm transition-all active:scale-90",
+                        meme.liked ? "text-accent font-medium" : "text-muted hover:text-foreground"
+                      )}
+                    >
+                      <ThumbsUp className={cn("h-4 w-4", meme.liked && "fill-current")} />
+                      {formatLikes(meme.likes)}
+                    </button>
+                    <span className="flex items-center gap-1.5 text-sm text-muted">
+                      <MessageCircle className="h-4 w-4" />
+                      {meme.comments}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs text-muted">{meme.createdAt}</span>
+                    <button type="button" className="text-muted hover:text-foreground transition-colors active:scale-90">
+                      <Share2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+
+                <p className="text-[11px] text-muted">von <span className="font-medium text-zinc-400">@{meme.author}</span></p>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

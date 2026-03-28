@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] — 2026-03-28
+
+### Added
+- **Smart Brevity News Cards:** Semafor-inspiriertes Design mit farbiger Kategorien-Border, Threat-Level-Dots (5-Punkte), Source-Flags, Pulse-Dot bei aktuellen Artikeln
+- **Signal vs. Noise Memes:** Jedes Meme hat jetzt einen Faktencheck (Faktenbasiert/Irreführend/Falsch/Satire) mit Quellen — inspiriert von Ground News
+- **Mobile Bottom Navigation:** 5-Tab-Navigation (Home, News, Karte, Memes, Profil) fuer mobile Nutzer
+- **Verbessertes Farbsystem:** Subtile transluzente Surfaces (`from-white/[0.02]`), Glow bei aktuellen Artikeln, modernere Border-Behandlung (`border-white/[0.06]`)
+
+### Changed
+- News Cards komplett redesignt: Smart Brevity Format, HTML-Bereinigung, Country-Flags
+- Meme-Galerie erweitert um Faktencheck-Karten mit 5 Statustypen
+- Body hat jetzt `pb-16` fuer Mobile Bottom Nav Platz
+
 ## [0.3.0] — 2026-03-28
 
 ### Added

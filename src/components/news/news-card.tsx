@@ -1,11 +1,10 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { relativeTime } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import {
   Crosshair, Handshake, TrendingUp, Heart, Atom, Shield,
-  ExternalLink,
+  ExternalLink, Clock, Newspaper,
 } from "lucide-react";
 
 interface Article {
@@ -22,80 +21,125 @@ interface Article {
   tone: number;
 }
 
-const CATEGORY_CONFIG: Record<string, { icon: typeof Crosshair; color: string; bg: string }> = {
-  MILITARY: { icon: Crosshair, color: "text-red-400", bg: "bg-red-950/50" },
-  DIPLOMATIC: { icon: Handshake, color: "text-blue-400", bg: "bg-blue-950/50" },
-  ECONOMIC: { icon: TrendingUp, color: "text-amber-400", bg: "bg-amber-950/50" },
-  HUMANITARIAN: { icon: Heart, color: "text-green-400", bg: "bg-green-950/50" },
-  NUCLEAR: { icon: Atom, color: "text-purple-400", bg: "bg-purple-950/50" },
-  CYBER: { icon: Shield, color: "text-cyan-400", bg: "bg-cyan-950/50" },
+const CATEGORY_CONFIG: Record<string, { icon: typeof Crosshair; color: string; borderColor: string; label: string }> = {
+  MILITARY: { icon: Crosshair, color: "text-red-400", borderColor: "border-l-red-500", label: "Militaer" },
+  DIPLOMATIC: { icon: Handshake, color: "text-blue-400", borderColor: "border-l-blue-500", label: "Diplomatie" },
+  ECONOMIC: { icon: TrendingUp, color: "text-amber-400", borderColor: "border-l-amber-500", label: "Wirtschaft" },
+  HUMANITARIAN: { icon: Heart, color: "text-emerald-400", borderColor: "border-l-emerald-500", label: "Humanitaer" },
+  NUCLEAR: { icon: Atom, color: "text-purple-400", borderColor: "border-l-purple-500", label: "Nuklear" },
+  CYBER: { icon: Shield, color: "text-cyan-400", borderColor: "border-l-cyan-500", label: "Cyber" },
+  UNCATEGORIZED: { icon: Newspaper, color: "text-zinc-400", borderColor: "border-l-zinc-500", label: "Sonstiges" },
 };
 
 const REGION_LABELS: Record<string, string> = {
-  GAZA: "Gaza",
-  ISRAEL: "Israel",
-  LEBANON: "Libanon",
-  SYRIA: "Syrien",
-  YEMEN: "Jemen",
-  IRAN: "Iran",
-  IRAQ: "Irak",
-  RED_SEA: "Rotes Meer",
-  GULF: "Golf",
-  EUROPE: "Europa",
-  GLOBAL: "Global",
+  GAZA: "Gaza", ISRAEL: "Israel", LEBANON: "Libanon", SYRIA: "Syrien",
+  YEMEN: "Jemen", IRAN: "Iran", IRAQ: "Irak", RED_SEA: "Rotes Meer",
+  GULF: "Golf", EUROPE: "Europa", GLOBAL: "Global",
+};
+
+const SOURCE_FLAGS: Record<string, string> = {
+  US: "🇺🇸", GB: "🇬🇧", DE: "🇩🇪", IL: "🇮🇱", QA: "🇶🇦",
+  SA: "🇸🇦", FR: "🇫🇷", CN: "🇨🇳", RU: "🇷🇺", INT: "🌐",
 };
 
 export function NewsCard({ article }: { article: Article }) {
-  const t = useTranslations("news");
-  const config = CATEGORY_CONFIG[article.category] ?? CATEGORY_CONFIG.MILITARY;
+  const config = CATEGORY_CONFIG[article.category] ?? CATEGORY_CONFIG.UNCATEGORIZED;
   const Icon = config.icon;
-  const toneColor = article.tone > 0 ? "text-green-400" : article.tone < -3 ? "text-red-400" : "text-amber-400";
+  const flag = SOURCE_FLAGS[article.sourceCountry] ?? "🌐";
+  const isRecent = (Date.now() - new Date(article.publishedAt).getTime()) < 3600000;
+  const threatLevel = Math.min(5, Math.max(1, Math.ceil(Math.abs(article.tone) / 2) || 2));
+
+  // Clean HTML from summary
+  const cleanSummary = article.summary
+    ?.replace(/<[^>]*>/g, "")
+    ?.replace(/\s+/g, " ")
+    ?.trim() || "";
 
   return (
-    <article className="group rounded-xl bg-surface border border-border p-5 sm:p-6 hover:border-accent/20 transition-colors">
-      <div className="flex gap-4">
-        {/* Category Icon */}
-        <div className={cn("shrink-0 rounded-lg p-2.5 h-fit", config.bg)}>
-          <Icon className={cn("h-5 w-5", config.color)} />
+    <article
+      className={cn(
+        "group rounded-2xl bg-gradient-to-br from-white/[0.02] to-transparent",
+        "border border-white/[0.06] border-l-[3px]",
+        config.borderColor,
+        "p-5 hover:border-white/[0.12] transition-all hover:bg-white/[0.02]",
+        isRecent && "shadow-[0_0_30px_-10px_rgba(249,115,22,0.15)]"
+      )}
+    >
+      <div className="space-y-3">
+        {/* Top meta row */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className={cn("text-[10px] font-bold uppercase tracking-widest", config.color)}>
+              {config.label}
+            </span>
+            {article.region && article.region !== "GLOBAL" && (
+              <>
+                <span className="text-zinc-700">·</span>
+                <span className="text-[10px] text-muted uppercase tracking-wider">
+                  {REGION_LABELS[article.region] ?? article.region}
+                </span>
+              </>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            {isRecent && (
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
+              </span>
+            )}
+            <span className="flex items-center gap-1 text-xs text-muted">
+              <Clock className="h-3 w-3" />
+              {relativeTime(article.publishedAt)}
+            </span>
+          </div>
         </div>
 
-        <div className="flex-1 min-w-0 space-y-2">
-          {/* Header: Source + Time */}
-          <div className="flex items-center gap-3 text-xs text-muted">
-            <span className="font-medium text-foreground/80">{article.source}</span>
-            <span className="text-border">|</span>
-            <span>{REGION_LABELS[article.region] ?? article.region}</span>
-            <span className="text-border">|</span>
-            <time dateTime={article.publishedAt}>
-              {relativeTime(article.publishedAt)}
-            </time>
+        {/* Headline */}
+        <h3 className="text-base sm:text-lg font-bold leading-snug tracking-tight">
+          {article.url !== "#" ? (
+            <a
+              href={article.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group/link flex items-start gap-2 hover:text-accent transition-colors"
+            >
+              {article.title}
+              <ExternalLink className="h-4 w-4 shrink-0 mt-1 opacity-0 group-hover/link:opacity-100 transition-opacity" />
+            </a>
+          ) : (
+            article.title
+          )}
+        </h3>
+
+        {/* Summary — Smart Brevity style */}
+        {cleanSummary && (
+          <p className="text-sm text-zinc-400 leading-relaxed line-clamp-2">
+            {cleanSummary}
+          </p>
+        )}
+
+        {/* Bottom row */}
+        <div className="flex items-center justify-between pt-1">
+          {/* Source with flag */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm">{flag}</span>
+            <span className="text-xs font-medium text-zinc-300">{article.source}</span>
           </div>
 
-          {/* Title */}
-          <h3 className="text-base sm:text-lg font-semibold leading-snug group-hover:text-accent transition-colors">
-            {article.url !== "#" ? (
-              <a href={article.url} target="_blank" rel="noopener noreferrer" className="flex items-start gap-2">
-                {article.title}
-                <ExternalLink className="h-4 w-4 shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </a>
-            ) : (
-              article.title
-            )}
-          </h3>
-
-          {/* Summary */}
-          <p className="text-sm text-muted leading-relaxed line-clamp-2">
-            {article.summary}
-          </p>
-
-          {/* Footer: Tone indicator */}
-          <div className="flex items-center gap-4 text-xs text-muted pt-1">
-            <span className={cn("font-mono", toneColor)}>
-              Tone: {article.tone > 0 ? "+" : ""}{article.tone.toFixed(1)}
-            </span>
-            <span className="uppercase tracking-wider text-[10px] opacity-60">
-              {article.sourceCountry}
-            </span>
+          {/* Threat level dots */}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-0.5" title={`Intensitaet: ${threatLevel}/5`}>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div
+                  key={i}
+                  className={cn(
+                    "h-1.5 w-1.5 rounded-full",
+                    i < threatLevel ? "bg-red-500" : "bg-zinc-800"
+                  )}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

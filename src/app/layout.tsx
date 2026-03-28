@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { Providers } from "@/components/providers";
+import { BottomNav } from "@/components/layout/bottom-nav";
 import "./globals.css";
 
 const inter = Inter({
@@ -21,6 +22,11 @@ export const metadata: Metadata = {
       "Echtzeit-Eskalationsindex und Konfliktanalyse aus 30+ internationalen Quellen.",
     type: "website",
   },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    viewportFit: "cover",
+  },
 };
 
 export default async function RootLayout({
@@ -33,10 +39,11 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} className={`${inter.variable} dark`}>
-      <body className="min-h-screen bg-gray-950 text-gray-100 font-sans antialiased">
+      <body className="min-h-screen bg-[#09090b] text-zinc-100 font-sans antialiased pb-16 md:pb-0">
         <Providers>
           <NextIntlClientProvider messages={messages}>
             {children}
+            <BottomNav />
           </NextIntlClientProvider>
         </Providers>
       </body>
