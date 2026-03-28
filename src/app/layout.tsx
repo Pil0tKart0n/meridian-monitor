@@ -22,11 +22,6 @@ export const metadata: Metadata = {
       "Echtzeit-Eskalationsindex und Konfliktanalyse aus 30+ internationalen Quellen.",
     type: "website",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    viewportFit: "cover",
-  },
 };
 
 export default async function RootLayout({
@@ -38,8 +33,8 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className={`${inter.variable} dark`}>
-      <body className="min-h-screen bg-[#09090b] text-zinc-100 font-sans antialiased pb-16 md:pb-0">
+    <html lang={locale} className={`${inter.variable}`}>
+      <body className="min-h-screen bg-zinc-950 text-zinc-100 font-sans antialiased pb-16 md:pb-0">
         <Providers>
           <NextIntlClientProvider messages={messages}>
             {children}
