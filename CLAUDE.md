@@ -6,8 +6,8 @@
 
 - **Name:** Meridian Monitor
 - **Description:** Geopolitische Nachrichtenplattform mit Fokus auf den Nahostkonflikt und globale Eskalationsrisiken. Kernfeature: ein datengetriebener Global Escalation Index (GEI), der in Echtzeit die Wahrscheinlichkeit einer totalen Eskalation berechnet. Freemium-Modell mit Premium-Abos. Mehrsprachig (DE/EN).
-- **Status:** Phase 3 — Build (Sprint 1+2 abgeschlossen)
-- **Current Sprint:** Sprint 2 — Auth, Pipeline, Admin, GPT (abgeschlossen 2026-03-28)
+- **Status:** Phase 3 — Build (Sprint 1-3 abgeschlossen)
+- **Current Sprint:** Sprint 3 — Redesign, Memes, Konfliktkarte (abgeschlossen 2026-03-28)
 
 ## Business Model
 
@@ -254,3 +254,10 @@ Methodik: CAMEO Event Codes (GDELT) + ACLED Events + NLP Sentiment + Market Data
 - SQLite DB mit 391 echten Artikeln aus 20+ RSS-Quellen
 - GEI History Chart, Profile Page, SEO (sitemap, robots.txt)
 - 20 Routen, Production Build erfolgreich
+
+### v0.3.0 — Sprint 3 (2026-03-28)
+- Bento Grid Landing Page (modern, Gen-Z-freundlich)
+- Meme-Galerie mit Community-Features (Likes, Tags, Sort)
+- Interaktive SVG-Konfliktkarte mit 8 Fraktionen
+- Neues Farbschema (Zinc-basiert, Gradient-Text, Glow-Effekte)
+- 22 Routen, Production Build erfolgreich

@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] — 2026-03-28
+
+### Added
+- **Bento Grid Landing Page:** Modernes Layout mit Gradient-Text, animiertem Grid-Background, Quick Stats, Mini-Headline-Feed
+- **Meme-Galerie (/memes):** Masonry Grid mit geopolitischem Humor, Like/Share/Comment, Sort (Hot/Neu/Top), Tag-Filter
+- **Interaktive Konfliktkarte (/map):** SVG-basiert mit 8 Fraktionen, animierte Pulse-Ringe, Klick-Details mit Intensitaetsbalken und Event-Listen, Versorgungsrouten-Linien
+- **Fraktions-System:** 8 Fraktionen mit eigenen Farben (Israel, Hamas, Hisbollah, Iran, Huthi, NATO, Russland, Tuerkei)
+- Neues Farbschema (Zinc-basiert, waermer), Gradient-Text-Utility, Glow-Effekte
+
+### Changed
+- Landing Page komplett redesignt fuer juengere Zielgruppe (18-35)
+- Navigation um Memes-Link erweitert
+- Konfliktkarte von Premium-Preview zu interaktiver SVG-Karte upgraded
+
 ## [0.2.0] — 2026-03-28
 
 ### Added

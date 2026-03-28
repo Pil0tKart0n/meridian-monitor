@@ -122,4 +122,4 @@ MIT
 
 ## Status
 
-v0.2.0 --- MVP mit Auth, GPT-Summarization, Admin Dashboard und 391 echten Nachrichtenartikeln. 20 Routen, Production Build erfolgreich.
+v0.3.0 --- Redesign mit Bento Grid, Meme-Galerie, interaktive Konfliktkarte mit 8 Fraktionen, 22 Routen, 391 echte Artikel mit GPT-Zusammenfassungen.
