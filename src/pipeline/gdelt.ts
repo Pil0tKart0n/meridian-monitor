@@ -9,17 +9,8 @@
 
 const GDELT_DOC_API = "https://api.gdeltproject.org/api/v2/doc/doc";
 
-const CONFLICT_KEYWORDS = [
-  "Gaza", "Hamas", "Hezbollah", "Hisbollah", "Iran Israel",
-  "Yemen Houthi", "Red Sea attack", "Suez Canal",
-  "Syria conflict", "Lebanon border",
-  "nuclear Iran", "IAEA Iran",
-  "NATO Russia", "Ukraine",
-  "military escalation", "missile strike",
-  "drone attack", "ceasefire",
-  "UN Security Council", "sanctions",
-  "oil price conflict", "Strait of Hormuz",
-].join(" OR ");
+// GDELT requires parentheses around OR groups, and at least 2 terms
+const CONFLICT_KEYWORDS = "(Gaza OR Hamas OR Hezbollah OR Iran OR Syria OR Lebanon OR Yemen OR Houthi OR NATO OR Ukraine OR missile OR ceasefire OR sanctions OR IAEA OR nuclear)";
 
 interface GdeltArticle {
   url: string;
@@ -41,16 +32,12 @@ export async function fetchGdeltArticles(
   maxRecords = 50,
   timespan = "15min"
 ): Promise<GdeltArticle[]> {
-  const params = new URLSearchParams({
-    query: CONFLICT_KEYWORDS,
-    mode: "ArtList",
-    maxrecords: String(maxRecords),
-    timespan: timespan,
-    format: "json",
-    sort: "DateDesc",
-  });
-
-  const url = `${GDELT_DOC_API}?${params.toString()}`;
+  // Build URL manually — URLSearchParams over-encodes parentheses which GDELT rejects
+  const encodedQuery = encodeURIComponent(CONFLICT_KEYWORDS)
+    .replace(/%28/g, "(")
+    .replace(/%29/g, ")")
+    .replace(/%20/g, "%20");
+  const url = `${GDELT_DOC_API}?query=${encodedQuery}&mode=ArtList&maxrecords=${maxRecords}&timespan=${timespan}&format=json&sort=DateDesc`;
 
   try {
     const response = await fetch(url, {
@@ -62,8 +49,15 @@ export async function fetchGdeltArticles(
       return [];
     }
 
-    const data: GdeltResponse = await response.json();
-    return data.articles ?? [];
+    // GDELT returns content-type: text/html even for JSON
+    const text = await response.text();
+    try {
+      const data: GdeltResponse = JSON.parse(text);
+      return data.articles ?? [];
+    } catch {
+      console.error("[GDELT] Failed to parse response:", text.slice(0, 200));
+      return [];
+    }
   } catch (error) {
     console.error("[GDELT] Fetch error:", error);
     return [];
