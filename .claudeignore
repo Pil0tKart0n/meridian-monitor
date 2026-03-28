@@ -1,0 +1,11 @@
+# Claude Code — Auto-Context Exclusions
+# Diese Dateien werden von Claude Code nicht automatisch in den Kontext geladen.
+# Explicit Read-Tool-Aufrufe durch Skills funktionieren weiterhin.
+
+# Große Skill-Referenz-Dokumentation (~820 KB)
+# Wird von Skills on-demand gelesen, nicht bei Session-Start benötigt.
+docs/skills/
+
+# Performance-Reports und Baselines (werden nur beim /perf Skill benötigt)
+docs/performance/reports/
+docs/performance/baselines/

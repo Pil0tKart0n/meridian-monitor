@@ -1,0 +1,78 @@
+# Auto-Label: Sets status:done when an issue is closed via commit
+# Mentioned in 5 retros as a needed improvement for label hygiene.
+#
+# Triggers:
+# - Issue closed → adds "status:done", removes "status:in-progress"
+# - Issue reopened → removes "status:done", adds "status:in-progress"
+
+name: Auto-Label Issues
+
+on:
+  issues:
+    types: [closed, reopened]
+
+permissions:
+  issues: write
+
+jobs:
+  auto-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: On Close → status:done
+        if: github.event.action == 'closed'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const labels = issue.labels.map(l => l.name);
+
+            // Remove in-progress / blocked labels
+            const removeLabels = ['status:in-progress', 'status:blocked', 'status:ready'];
+            for (const label of removeLabels) {
+              if (labels.includes(label)) {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  name: label,
+                });
+              }
+            }
+
+            // Add status:done
+            if (!labels.includes('status:done')) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['status:done'],
+              });
+            }
+
+      - name: On Reopen → status:in-progress
+        if: github.event.action == 'reopened'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const labels = issue.labels.map(l => l.name);
+
+            // Remove status:done
+            if (labels.includes('status:done')) {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                name: 'status:done',
+              });
+            }
+
+            // Add status:in-progress
+            if (!labels.includes('status:in-progress')) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['status:in-progress'],
+              });
+            }

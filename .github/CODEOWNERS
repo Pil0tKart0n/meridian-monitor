@@ -1,0 +1,33 @@
+# CODEOWNERS — Auto-assigns reviewers based on file paths
+# Adapt to your team structure. For solo + Claude, this serves as documentation.
+
+# Global fallback
+*                       @your-username
+
+# Frontend
+src/components/**       @your-username
+src/app/**              @your-username
+src/styles/**           @your-username
+
+# Backend / API
+src/lib/**              @your-username
+src/api/**              @your-username
+
+# Database
+prisma/**               @your-username
+drizzle/**              @your-username
+supabase/migrations/**  @your-username
+
+# Infrastructure
+.github/**              @your-username
+infra/**                @your-username
+Dockerfile              @your-username
+docker-compose*.yml     @your-username
+
+# Security / Compliance
+docs/security/**        @your-username
+SECURITY.md             @your-username
+
+# Architecture
+docs/adr/**             @your-username
+docs/contracts/**       @your-username
