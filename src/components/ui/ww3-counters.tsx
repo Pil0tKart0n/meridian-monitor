@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import { Skull, Radiation, ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +11,15 @@ interface CounterData {
   color: string;
   glowColor: string;
   description: string;
+}
+
+// SSR-safe mounted check without useEffect+setState
+function useMounted() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 }
 
 function useAnimatedNumber(target: number, duration: number = 2000) {
@@ -63,13 +72,9 @@ const COUNTERS: CounterData[] = [
 
 export function WW3Counters() {
   const [expanded, setExpanded] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useMounted();
 
   const daysSinceEscalation = formatDaysSince("2023-10-07");
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const ww3Value = useAnimatedNumber(mounted ? COUNTERS[0].value : 0, 1500);
   const nukeValue = useAnimatedNumber(mounted ? COUNTERS[1].value : 0, 1800);

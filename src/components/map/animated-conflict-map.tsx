@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils";
-import { Crosshair, Info, Maximize2, Minimize2 } from "lucide-react";
+import { Crosshair, Maximize2, Minimize2 } from "lucide-react";
 
 interface ConflictEvent {
   id: string;

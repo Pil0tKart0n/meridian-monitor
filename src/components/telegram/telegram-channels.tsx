@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { ExternalLink, Users, Video, Eye, Shield, ChevronRight, AlertTriangle } from "lucide-react";
+import { Users, Video, Eye, Shield, ChevronRight, AlertTriangle } from "lucide-react";
 
 interface TelegramChannel {
   id: string;
@@ -148,12 +148,11 @@ const CHANNELS: TelegramChannel[] = [
 
 export function TelegramChannels() {
   const [activeCategory, setActiveCategory] = useState("Alle");
-  const [showWarning, setShowWarning] = useState(true);
   const [acknowledgedWarning, setAcknowledgedWarning] = useState(false);
 
   const filtered = activeCategory === "Alle" ? CHANNELS : CHANNELS.filter((ch) => ch.category === activeCategory);
 
-  if (showWarning && !acknowledgedWarning) {
+  if (!acknowledgedWarning) {
     return (
       <div className="rounded-2xl border border-red-500/20 bg-red-950/20 p-8 text-center space-y-4">
         <AlertTriangle className="h-10 w-10 text-red-500 mx-auto" />
