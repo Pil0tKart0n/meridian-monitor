@@ -21,7 +21,7 @@ export function Header() {
     { href: "/pricing", label: t("pricing") },
   ];
 
-  const userTier = (session?.user as unknown as Record<string, unknown>)?.tier as string | undefined;
+  const userTier = session?.user ? (session.user as { tier?: string }).tier : undefined;
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/90 backdrop-blur-xl">

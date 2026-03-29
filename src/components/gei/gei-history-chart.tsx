@@ -32,10 +32,14 @@ export function GeiHistoryChart({ premium = false }: { premium?: boolean }) {
   async function fetchHistory() {
     try {
       const res = await fetch("/api/gei/history?days=30");
+      if (!res.ok) {
+        console.error("[GEI History] HTTP", res.status);
+        return;
+      }
       const json = await res.json();
       setData(json.data ?? []);
-    } catch {
-      console.error("Failed to fetch GEI history");
+    } catch (error) {
+      console.error("[GEI History] Fetch failed:", error instanceof Error ? error.message : "Unknown");
     } finally {
       setLoading(false);
     }

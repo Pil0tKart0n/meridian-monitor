@@ -37,10 +37,14 @@ export function NewsFeed() {
         if (category !== "all") params.set("category", category);
         if (region !== "all") params.set("region", region);
         const res = await fetch(`/api/news?${params.toString()}`);
+        if (!res.ok) {
+          console.error("[NewsFeed] HTTP", res.status);
+          return;
+        }
         const json = await res.json();
         setArticles(json.data ?? []);
       } catch (error) {
-        console.error("Failed to fetch news:", error);
+        console.error("[NewsFeed] Fetch failed:", error instanceof Error ? error.message : "Unknown");
       } finally {
         setLoading(false);
       }

@@ -25,7 +25,7 @@ export function BreakingTicker() {
           <div className="overflow-hidden relative flex-1">
             <div className="animate-marquee flex gap-12 whitespace-nowrap">
               {[...breakingNews, ...breakingNews].map((item, i) => (
-                <span key={i} className="text-sm text-red-300/70">{item}</span>
+                <span key={`ticker-${i}`} className="text-sm text-red-300/70">{item}</span>
               ))}
             </div>
           </div>

@@ -52,10 +52,19 @@ export function AnimatedGlobe({ className = "" }: { className?: string }) {
   const [selectedEvent, setSelectedEvent] = useState<MapEvent | null>(null);
   const [time, setTime] = useState(0);
 
-  // Simple animation tick
+  // Animation tick — throttled to ~10fps for battery efficiency
   useEffect(() => {
-    const interval = setInterval(() => setTime((t) => t + 1), 100);
-    return () => clearInterval(interval);
+    let animId: number;
+    let last = 0;
+    function tick(now: number) {
+      if (now - last >= 100) {
+        setTime((t) => t + 1);
+        last = now;
+      }
+      animId = requestAnimationFrame(tick);
+    }
+    animId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animId);
   }, []);
 
   return (

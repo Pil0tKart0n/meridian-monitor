@@ -4,6 +4,19 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import { db } from "./db";
 
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      email: string;
+      name?: string | null;
+      image?: string | null;
+      tier: string;
+      locale: string;
+    };
+  }
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
@@ -47,11 +60,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-      }
-      // Fetch tier from DB
-      if (token.id) {
+        // Fetch tier on initial login only
         const dbUser = await db.user.findUnique({
-          where: { id: token.id as string },
+          where: { id: user.id },
           select: { tier: true, locale: true },
         });
         if (dbUser) {
@@ -64,8 +75,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (session.user && token.id) {
         session.user.id = token.id as string;
-        (session.user as unknown as Record<string, unknown>).tier = token.tier;
-        (session.user as unknown as Record<string, unknown>).locale = token.locale;
+        // NextAuth types don't include custom fields — safe cast needed
+        const user = session.user as unknown as Record<string, unknown>;
+        user.tier = (token.tier as string) ?? "FREE";
+        user.locale = (token.locale as string) ?? "de";
       }
       return session;
     },

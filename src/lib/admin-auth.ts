@@ -1,24 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const PIPELINE_SECRET = process.env.PIPELINE_SECRET ?? "dev-pipeline-secret";
-
 /**
  * Check admin authorization for pipeline endpoints.
- * Accepts either:
- * - Authorization: Bearer <PIPELINE_SECRET> header
- * - ?secret=<PIPELINE_SECRET> query param (for easy testing)
+ * Accepts: Authorization: Bearer <PIPELINE_SECRET> header
  *
- * In production, set PIPELINE_SECRET env var.
+ * PIPELINE_SECRET must be set as env var — no default fallback.
  */
 export function requirePipelineAuth(request: NextRequest): NextResponse | null {
-  const authHeader = request.headers.get("authorization");
-  const querySecret = request.nextUrl.searchParams.get("secret");
+  const secret = process.env.PIPELINE_SECRET;
 
-  const providedSecret = authHeader?.replace("Bearer ", "") ?? querySecret;
-
-  if (providedSecret !== PIPELINE_SECRET) {
+  if (!secret) {
+    console.error("[Auth] PIPELINE_SECRET not configured");
     return NextResponse.json(
-      { error: "Unauthorized. Provide valid pipeline secret." },
+      { error: "Server misconfigured" },
+      { status: 500 }
+    );
+  }
+
+  const authHeader = request.headers.get("authorization");
+  const providedSecret = authHeader?.startsWith("Bearer ")
+    ? authHeader.slice(7)
+    : null;
+
+  if (!providedSecret || providedSecret !== secret) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
       { status: 401 }
     );
   }

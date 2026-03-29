@@ -22,7 +22,7 @@ export function BottomNav() {
         {NAV_ITEMS.map((item) => {
           const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
           return (
-            <Link key={item.href} href={item.href} className={cn("flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-colors min-w-[56px]", isActive ? "text-orange-500" : "text-zinc-500 hover:text-zinc-300")}>
+            <Link key={item.href} href={item.href} aria-current={isActive ? "page" : undefined} className={cn("flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-colors min-w-[56px]", isActive ? "text-orange-500" : "text-zinc-500 hover:text-zinc-300")}>
               <item.icon className="h-5 w-5" />
               <span className="text-[10px] font-medium">{item.label}</span>
             </Link>
