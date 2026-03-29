@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { Providers } from "@/components/providers";
 import { BottomNav } from "@/components/layout/bottom-nav";
+import { WW3Counters } from "@/components/ui/ww3-counters";
 import "./globals.css";
 
 const inter = Inter({
@@ -38,6 +39,7 @@ export default async function RootLayout({
         <Providers>
           <NextIntlClientProvider messages={messages}>
             {children}
+            <WW3Counters />
             <BottomNav />
           </NextIntlClientProvider>
         </Providers>
