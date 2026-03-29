@@ -10,33 +10,45 @@ Keine Meinungen. Keine Panik. Datenbasierte Analyse.
 
 ## Features
 
+### WW3 Risk Counter + Nuklear-Risiko
+- Sticky Widget oben rechts --- immer im Blick
+- WW3-Risiko-Index (0--100%) und Nuklear-Eskalationsstufe
+- Expandierbares Panel mit Fortschrittsbalken und Tage-seit-Eskalation-Counter
+- Daten basierend auf GDELT, ACLED und SIPRI
+
 ### Global Escalation Index (GEI)
 - Echtzeit-Konfliktindex (0--100) basierend auf 5 Kategorien: Militaer, Diplomatie, Konfliktereignisse, Wirtschaft, Nuklear/Strategie
 - Transparente Methodik --- du siehst genau, welche Events den Index bewegen
 - Historische Trends: 7-Tage, 30-Tage, 90-Tage Verlauf
 - Push-Alerts bei signifikanten Veraenderungen
 
+### Animierte Konfliktkarte
+- SVG-basierte Karte mit Laendersilhouetten (Israel, Jordanien, Libanon, Syrien, Tuerkei, Iran, Jemen, Saudi-Arabien, Aegypten)
+- 12 animierte Konfliktereignisse mit Emojis und Faction-Farben
+- Animierte Versorgungsrouten (Iran -> Syrien, Iran -> Huthis, Iran -> Hamas)
+- Fullscreen-Modus, Hover-Effekte auf Laendern, Detail-Panel bei Klick
+- 8 Fraktionen: Israel/IDF, Hamas, Hisbollah, Iran/IRGC, Huthi, NATO/USA, Russland, Tuerkei
+
 ### Live-News-Feed
 - Automatische Aggregation aus Reuters, BBC, Al Jazeera, Times of Israel, Al-Monitor und 25+ weiteren Quellen
-- KI-gestuetzte Zusammenfassungen und Duplikat-Erkennung
-- Quellenvergleich: dieselbe Story aus westlichen, arabischen, israelischen, russischen und chinesischen Medien
+- KI-gestuetzte Zusammenfassungen (GPT-4o-mini) und Duplikat-Erkennung
+- 391+ echte Artikel in der Datenbank
+- Smart Brevity Cards mit Faktencheck-Layer
 
-### Interaktive Konfliktkarte
-- Echtzeit-Heatmap aktiver Konfliktzonen
-- Truppenbewegungen, Luftangriffe, Raketenbeschuss visualisiert
-- Timeline-Scrubber: wie hat sich die Lage entwickelt?
-- Handelsrouten-Overlay (Suezkanal, Rotes Meer, Strasse von Hormuz)
+### Signal vs. Noise --- Meme-Galerie
+- 9 geopolitische Memes mit Faktencheck (Faktenbasiert / Irreführend / Falsch / Satire)
+- Masonry-Grid mit Like/Share/Comment, Sort (Hot/Neu/Top), Tag-Filter
+- Quellenangaben bei jedem Faktencheck
+
+### Telegram Frontline
+- 9 kuratierte Kriegs-/OSINT-Telegram-Kanaele
+- Kategorien: Frontline, OSINT, Analyse, Raketenalarm, Drohnen & Tech, Nahost
+- Content-Warning-Gate (muss bestaetigt werden)
+- Warnstufen pro Kanal: Sicher / Grafisch / Extrem Grafisch
 
 ### Wirtschafts-Impact-Dashboard
-- VIX (Angstindex), Oelpreis, Gold, Defense-Stocks in Echtzeit
+- VIX (Angstindex), Oelpreis, Gold, Defense-Stocks
 - Korrelation zwischen geopolitischen Events und Marktreaktionen
-- Supply-Chain-Risk-Alerts fuer Energiemaerkte und Handelsrouten
-
-### OSINT-Integration
-- Telegram-Kanal-Monitoring (OSINT-Community)
-- Think-Tank-Analysen (Brookings, CSIS, RAND, Chatham House)
-- UN/OCHA Humanitaere Daten
-- Satellitenbilder-Referenzen
 
 ## Preise
 
@@ -49,21 +61,23 @@ Keine Meinungen. Keine Panik. Datenbasierte Analyse.
 | Briefings | Woechentlich | Taeglich | + Quartals-Forecasting |
 | Werbung | Ja | Werbefrei | Werbefrei |
 | Alerts | --- | Push-Alerts | + Custom Rules |
-| Community | --- | Zugang | Priority |
 
 ## Quick Start (Development)
 
 ```bash
 # Repository klonen
-git clone https://github.com/[username]/meridian-monitor.git
+git clone https://github.com/Pil0tKart0n/meridian-monitor.git
 cd meridian-monitor
 
 # Dependencies installieren
 npm install
 
+# Datenbank generieren
+npm run db:generate
+
 # Environment konfigurieren
 cp .env.example .env.local
-# API Keys eintragen (siehe .env.example fuer Details)
+# API Keys eintragen (OPENAI_API_KEY fuer Zusammenfassungen)
 
 # Development Server starten
 npm run dev
@@ -73,47 +87,70 @@ npm run test
 
 # Lint & Typecheck
 npm run lint && npm run typecheck
+
+# Production Build
+npm run build
 ```
 
 ## Tech Stack
 
 | Bereich | Technologie |
 |---------|-------------|
-| Frontend | Next.js 15, TypeScript, Tailwind CSS, shadcn/ui |
-| Backend | Next.js API Routes, tRPC, Node.js Cron-Jobs |
-| Database | PostgreSQL (Supabase), Redis (Upstash) |
-| Auth | NextAuth.js |
-| Payments | Stripe |
-| Maps | MapLibre GL JS |
+| Frontend | Next.js 16, React 19, TypeScript (strict), Tailwind CSS 4 |
+| Backend | Next.js API Routes, Prisma 6 |
+| Database | SQLite (Prisma), 391+ echte Artikel |
+| Auth | NextAuth.js v5 (Email/Password) |
+| Payments | Stripe (Subscriptions) |
+| Animation | Framer Motion, CSS Keyframes |
 | Charts | Recharts |
 | i18n | next-intl (DE + EN) |
-| Data Pipeline | GDELT, ACLED, RSS, FRED, Telegram Bot API |
-| Deployment | Vercel + Supabase + Railway |
+| Data Pipeline | GDELT, RSS (30+ Quellen), OpenAI GPT-4o-mini |
+| Testing | Vitest, 25 Unit-Tests |
+| Deployment | Vercel (Serverless) |
 
 ## Datenquellen
 
-Meridian Monitor bezieht Daten aus oeffentlich zugaenglichen Quellen:
-
 - **GDELT Project** --- Globale Event-Datenbank, aktualisiert alle 15 Minuten
-- **ACLED** --- Kuratierte Konfliktereignis-Daten
-- **30+ RSS-Feeds** --- Internationale Nachrichtenagenturen und regionale Medien
-- **FRED / Yahoo Finance** --- Wirtschaftsindikatoren und Marktdaten
-- **UN OCHA ReliefWeb** --- Humanitaere Lageberichte
+- **30+ RSS-Feeds** --- Reuters, BBC, Al Jazeera, Times of Israel, Al-Monitor und mehr
+- **OpenAI GPT-4o-mini** --- KI-Zusammenfassungen und Kategorisierung
+- **FRED / Yahoo Finance** --- VIX, Oelpreis, Gold, Defense-Stocks
 - **Telegram** --- OSINT-Community-Kanaele (oeffentlich)
+
+## Routen
+
+| Route | Beschreibung |
+|-------|-------------|
+| `/` | Landing Page mit GEI-Gauge, Features, Pricing |
+| `/news` | Live-News-Feed mit Kategorie- und Regionsfilter |
+| `/map` | Animierte Konfliktkarte + Hotspot-Details |
+| `/memes` | Meme-Galerie + Telegram-Kanaele |
+| `/economy` | Wirtschafts-Impact-Dashboard |
+| `/alerts` | Red Alert Feed |
+| `/methodology` | GEI-Methodik-Transparenz |
+| `/pricing` | Abo-Vergleich |
+| `/admin` | Admin Dashboard (Pipeline-Steuerung) |
 
 ## Projektstruktur
 
 ```
 src/
-  app/                   # Next.js App Router (Pages, Layouts)
-  components/            # UI-Komponenten
-  lib/                   # Shared Utilities, Types, Config
-  server/                # Backend-Logik (tRPC Router, Services)
-  pipeline/              # Data Pipeline (Scraper, Aggregator, GEI Calculator)
+  app/                   # Next.js App Router (22 Routen)
+  components/
+    landing/             # Hero, Features, Alerts, Pricing, Newsletter
+    map/                 # Animated Conflict Map, Hotspot Map
+    memes/               # Meme Gallery mit Faktencheck
+    telegram/            # Telegram Channels mit Warning Gate
+    gei/                 # Escalation Gauge, History Chart
+    news/                # Breaking Ticker, News Feed, News Cards
+    ui/                  # WW3 Counters, Animated Globe, Scroll Reveal
+    layout/              # Header, Footer, Bottom Nav
+  pipeline/              # Data Pipeline (RSS, GDELT, GEI Calculator, Summarizer)
+  lib/                   # Utilities, Auth, DB
   i18n/                  # Translations (DE, EN)
-docs/                    # Dokumentation, ADRs, Contracts
-features/                # Feature Specs
-tests/                   # E2E Tests
+docs/                    # Dokumentation, ADRs
+features/                # Feature Specs (9 Epics)
+tests/                   # Test Setup
+prisma/                  # DB Schema + Seed
 ```
 
 ## Lizenz
@@ -122,4 +159,4 @@ MIT
 
 ## Status
 
-v0.3.0 --- Redesign mit Bento Grid, Meme-Galerie, interaktive Konfliktkarte mit 8 Fraktionen, 22 Routen, 391 echte Artikel mit GPT-Zusammenfassungen.
+v0.5.0 --- WW3/Nuklear-Counter, animierte SVG-Konfliktkarte mit Laendersilhouetten, Telegram Frontline (9 Kanaele), 9 Memes mit Faktencheck, 25 Unit-Tests, Security Audit bestanden. 22 Routen, Production Build erfolgreich.
