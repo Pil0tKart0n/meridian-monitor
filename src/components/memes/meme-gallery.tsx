@@ -36,7 +36,7 @@ const DEMO_MEMES: Meme[] = [
   {
     id: "1",
     title: "Wenn der UN-Sicherheitsrat mal wieder ein Veto einlegt",
-    imageUrl: "https://placehold.co/600x500/18181b/f97316?text=🙄+UN+Veto+Again&font=montserrat",
+    imageUrl: "https://placehold.co/600x500/1a1a2e/f97316?text=🙄+UN+Veto+%23247&font=montserrat",
     author: "DiplomacyDave",
     likes: 847,
     comments: 63,
@@ -52,7 +52,7 @@ const DEMO_MEMES: Meme[] = [
   {
     id: "2",
     title: "Oelpreis-Trader wenn Huthi-Milizen ein Schiff angreifen",
-    imageUrl: "https://placehold.co/600x600/18181b/ef4444?text=📈+Brent+go+brrr&font=montserrat",
+    imageUrl: "https://placehold.co/600x600/1a0a0a/ef4444?text=📈+BRENT+GO+BRRR&font=montserrat",
     author: "PetroDollarPete",
     likes: 1243,
     comments: 89,
@@ -68,7 +68,7 @@ const DEMO_MEMES: Meme[] = [
   {
     id: "3",
     title: "IAEA-Inspektoren auf dem Weg nach Iran — zum 247. Mal",
-    imageUrl: "https://placehold.co/600x500/18181b/a855f7?text=☢️+IAEA+Again&font=montserrat",
+    imageUrl: "https://placehold.co/600x500/1a0a2e/a855f7?text=☢️+IAEA+AGAIN&font=montserrat",
     author: "NuklearNerd",
     likes: 556,
     comments: 42,
@@ -84,7 +84,7 @@ const DEMO_MEMES: Meme[] = [
   {
     id: "4",
     title: "NATO: 'Wir sind zutiefst besorgt' — Pressekonferenz #4782",
-    imageUrl: "https://placehold.co/600x500/18181b/0ea5e9?text=😐+Deep+Concern&font=montserrat",
+    imageUrl: "https://placehold.co/600x500/0a1a2e/0ea5e9?text=😐+DEEPLY+CONCERNED&font=montserrat",
     author: "BrusselsInsider",
     likes: 2103,
     comments: 156,
@@ -100,7 +100,7 @@ const DEMO_MEMES: Meme[] = [
   {
     id: "5",
     title: "Mein Prepper-Freund vs. die Realitaet — Runde 3 geht an ihn",
-    imageUrl: "https://placehold.co/600x600/18181b/22c55e?text=🏆+Prepper+Wins&font=montserrat",
+    imageUrl: "https://placehold.co/600x600/0a1a0a/22c55e?text=🏆+PREPPER+WINS&font=montserrat",
     author: "SurvivalSteve",
     likes: 3421,
     comments: 234,
@@ -116,7 +116,7 @@ const DEMO_MEMES: Meme[] = [
   {
     id: "6",
     title: "VIX Fear Index vs. mein Portfolio — Name a more iconic duo",
-    imageUrl: "https://placehold.co/600x500/18181b/eab308?text=💀+VIX+vs+Portfolio&font=montserrat",
+    imageUrl: "https://placehold.co/600x500/1a1a0a/eab308?text=💀+VIX+vs+PORTFOLIO&font=montserrat",
     author: "WallStreetWarrior",
     likes: 1876,
     comments: 98,
@@ -129,6 +129,54 @@ const DEMO_MEMES: Meme[] = [
       sources: ["CBOE", "Bloomberg"],
     },
   },
+  {
+    id: "7",
+    title: "Iron Dome MVP des Jahres — zum dritten Mal in Folge",
+    imageUrl: "https://placehold.co/600x500/0a0a1e/3b82f6?text=🛡️+IRON+DOME+MVP&font=montserrat",
+    author: "TelAvivTech",
+    likes: 4521,
+    comments: 312,
+    createdAt: "6h",
+    tags: ["Militaer", "Israel"],
+    liked: false,
+    factCheck: {
+      status: "mostly-true",
+      context: "Iron Dome hat eine Abfangrate von ~90% gegen Kurzstreckenraketen. Gegen Praezisionswaffen ist die Rate deutlich niedriger.",
+      sources: ["CSIS Missile Defense Project"],
+    },
+  },
+  {
+    id: "8",
+    title: "Erdogan: 'Wir stehen auf der richtigen Seite der Geschichte' — welche Seite wechselt er heute?",
+    imageUrl: "https://placehold.co/600x600/1a0e0a/f97316?text=🇹🇷+WHICH+SIDE+TODAY&font=montserrat",
+    author: "BosphorusBanter",
+    likes: 2890,
+    comments: 187,
+    createdAt: "8h",
+    tags: ["NATO", "Diplomatie"],
+    liked: true,
+    factCheck: {
+      status: "satire",
+      context: "Die Tuerkei verfolgt tatsaechlich eine komplexe Aussenpolitik zwischen NATO-Mitgliedschaft, Russland-Naehe und regionaler Machtprojektion.",
+      sources: ["Council on Foreign Relations"],
+    },
+  },
+  {
+    id: "9",
+    title: "FPV-Drohne fuer 500$ zerstoert Panzer fuer 3 Mio$ — Wirtschaft 101",
+    imageUrl: "https://placehold.co/600x500/0a1a1a/06b6d4?text=🤖+DRONE+vs+TANK&font=montserrat",
+    author: "DroneWarfare",
+    likes: 5120,
+    comments: 423,
+    createdAt: "3h",
+    tags: ["Militaer", "Technik"],
+    liked: false,
+    factCheck: {
+      status: "true",
+      context: "FPV-Drohnen kosten 300-800$ und haben im Ukraine-Krieg hunderte gepanzerte Fahrzeuge zerstoert. Die asymmetrische Kosten-Nutzen-Rechnung veraendert moderne Kriegsfuehrung.",
+      sources: ["RUSI", "Oryx OSINT"],
+    },
+  },
 ];
 
 const SORT_OPTIONS = [
@@ -137,7 +185,7 @@ const SORT_OPTIONS = [
   { key: "top", label: "Top", icon: TrendingUp },
 ] as const;
 
-const TAG_FILTERS = ["Alle", "Diplomatie", "Militaer", "Wirtschaft", "Nuklear", "Community", "NATO", "Iran", "Rotes Meer"];
+const TAG_FILTERS = ["Alle", "Diplomatie", "Militaer", "Wirtschaft", "Nuklear", "Community", "NATO", "Iran", "Rotes Meer", "Israel", "Technik", "Humor"];
 
 export function MemeGallery() {
   const [sort, setSort] = useState<string>("hot");
