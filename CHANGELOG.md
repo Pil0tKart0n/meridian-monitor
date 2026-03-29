@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] — 2026-03-29
+
+### Added
+- **WW3 Risk Counter + Nuklear-Risiko Counter:** Sticky Widget oben rechts mit expandierbarem Panel, animierten Fortschrittsbalken, Tage-seit-Eskalation-Counter
+- **Animierte SVG-Konfliktkarte:** Neue Karte mit Laendersilhouetten (Israel, Jordanien, Libanon, Syrien, Tuerkei, Iran, Jemen, Saudi-Arabien, Aegypten), animierten Versorgungsrouten, gestaffelten Konfliktereignissen mit Emojis, Fullscreen-Modus
+- **Telegram Frontline Sektion:** 9 kuratierte Kriegs-/OSINT-Telegram-Kanaele mit Content-Warning-Gate, Kategorie-Filter (Frontline, OSINT, Analyse, Raketenalarm, Drohnen & Tech, Nahost), Warnstufen (Sicher/Grafisch/Extrem)
+- **3 neue Memes:** Iron Dome MVP, Erdogan Seitenwechsel, FPV-Drohne vs. Panzer (total jetzt 9)
+- **Vitest Test-Setup:** 25 Unit-Tests fuer Utils und GEI-Calculator (Decay, Windowing, Boundary Values)
+- Neue Meme-Tags: Israel, Technik, Humor
+
+### Changed
+- Map-Page zeigt jetzt beide Karten (animiert + Hotspot-Detail)
+- Memes-Page integriert Telegram-Kanaele unterhalb der Meme-Galerie
+- Meme-Placeholder-Bilder mit dunkleren, atmosphaerischeren Farben
+
 ## [0.4.0] — 2026-03-28
 
 ### Added
